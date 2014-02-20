@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  class Spec
     VERSION = "0.0.1"
   end
 end

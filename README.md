@@ -1,29 +1,33 @@
 # Rack::Spec
-
-TODO: Write a gem description
+Define specifications of your Rack application.
 
 ## Installation
-
-Add this line to your application's Gemfile:
-
-    gem 'rack-spec'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rack-spec
+```
+gem install rack-spec
+```
 
 ## Usage
+```ruby
+require "rack"
+require "rack/spec"
+require "yaml"
 
-TODO: Write usage instructions here
+use Rack::Spec, spec: YAML.load("spec.yml")
 
-## Contributing
+run ->(env) do
+  [200, {}, ["OK"]]
+end
+```
 
-1. Fork it ( http://github.com/<my-github-username>/rack-spec/fork )
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+```yaml
+# spec.yml
+meta:
+  baseUri: http://api.example.com/
+
+endpoints:
+  /recipes:
+    GET:
+      queryParameters:
+        page:
+          type: integer
+```
