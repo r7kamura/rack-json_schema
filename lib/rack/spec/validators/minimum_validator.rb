@@ -5,7 +5,7 @@ module Rack
         def validate!(env)
           value = extract_value(env)
           if value && value.to_f < minimum
-            raise ValidationError, "Expected #@key to be equal or higher than #@minimum, but in fact #{value.inspect}"
+            raise ValidationError, "Expected #@key to be equal or higher than #{minimum}, but in fact #{value.inspect}"
           end
         end
 
