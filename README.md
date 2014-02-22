@@ -44,6 +44,12 @@ endpoints:
             - mono
             - di
             - tri
+    POST:
+      queryParameters:
+        title:
+          type: string
+          minimumLength: 3
+          maximumLength: 10
 ```
 
 ## Development
