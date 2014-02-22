@@ -32,6 +32,10 @@ endpoints:
           type: integer
           minimum: 1
           maximum: 10
+        rank:
+          type: float
+        time:
+          type: iso8601
 ```
 
 ## Development
