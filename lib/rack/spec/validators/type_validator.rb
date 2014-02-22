@@ -15,6 +15,8 @@ module Rack
           case @constraint
           when "integer"
             /\A-?\d+\z/
+          when "float"
+            /\A-?\d+(?:\.\d+)*\z/
           else
             //
           end

@@ -34,6 +34,8 @@ describe Rack::Spec do
                 type: integer
                 minimum: 1
                 maximum: 10
+              rank:
+                type: float
     EOS
   end
 
@@ -58,25 +60,33 @@ describe Rack::Spec do
     context "with valid request" do
       before do
         params[:page] = 5
+        params[:rank] = 2.0
       end
       it { should == 200 }
     end
 
-    context "with query parameter invalid to integer constraint" do
+    context "with query parameter invalid on integer" do
       before do
-        params[:page] = "x"
+        params[:page] = "1.0"
       end
       it { should == 400 }
     end
 
-    context "with invalid minimum query parameter" do
+    context "with query parameter invalid on float" do
+      before do
+        params[:rank] = "x"
+      end
+      it { should == 400 }
+    end
+
+    context "with query parameter invalid on minimum" do
       before do
         params[:page] = 0
       end
       it { should == 400 }
     end
 
-    context "with invalid maximum query parameter" do
+    context "with query parameter invalid on maximum" do
       before do
         params[:page] = 11
       end
