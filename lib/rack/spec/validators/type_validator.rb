@@ -19,17 +19,18 @@ module Rack
         register "integer", /\A-?\d+\z/
         register "iso8601", ->(value) { Time.iso8601(value) rescue false }
 
-        def validate!(env)
-          value = extract_value(env) or return
-          unless pattern === value
-            raise ValidationError, "Expected #@key to be #@constraint, but in fact #{value.inspect}"
-          end
-        end
-
         private
 
+        def valid?
+          value.nil? || pattern === value
+        end
+
+        def error_message
+          "Expected #{key} to be #{constraint}, but in fact #{value.inspect}"
+        end
+
         def pattern
-          self.class.patterns[@constraint]
+          self.class.patterns[constraint]
         end
       end
     end

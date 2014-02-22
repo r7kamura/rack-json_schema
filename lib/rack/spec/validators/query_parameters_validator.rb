@@ -10,7 +10,7 @@ module Rack
           parameters = @spec.reach("endpoints", env["PATH_INFO"], env["REQUEST_METHOD"], "queryParameters") || {}
           parameters.each do |key, hash|
             hash.each do |type, constraint|
-              ValidatorFactory.build(key, type, constraint).validate!(env)
+              ValidatorFactory.build(key, type, constraint, env).validate!
             end
           end
         end

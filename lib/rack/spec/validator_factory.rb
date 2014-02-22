@@ -10,8 +10,8 @@ module Rack
           validator_classes[name] = klass
         end
 
-        def build(key, type, constraint)
-          validator_classes[type].new(key, constraint)
+        def build(key, type, constraint, env)
+          validator_classes[type].new(key, constraint, env)
         end
       end
 
