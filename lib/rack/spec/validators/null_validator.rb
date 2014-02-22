@@ -1,7 +1,7 @@
 module Rack
   class Spec
     module Validators
-      class NullValidator
+      class NullValidator < Base
         def validate!(env)
         end
       end
