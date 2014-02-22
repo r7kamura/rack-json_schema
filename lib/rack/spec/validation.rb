@@ -7,7 +7,7 @@ module Rack
       end
 
       def call(env)
-        parameters_validator.validate!(env)
+        Validators::ParametersValidator.new(spec, env).validate!
         @app.call(env)
       end
 
@@ -15,10 +15,6 @@ module Rack
 
       def spec
         Spec.new(@options[:spec])
-      end
-
-      def parameters_validator
-        @parameters_validator ||= Validators::ParametersValidator.new(spec)
       end
     end
   end
