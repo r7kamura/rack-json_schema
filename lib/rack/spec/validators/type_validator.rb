@@ -15,10 +15,10 @@ module Rack
 
         def pattern
           case @constraint
-          when "integer"
-            /\A-?\d+\z/
           when "float"
             /\A-?\d+(?:\.\d+)*\z/
+          when "integer"
+            /\A-?\d+\z/
           when "iso8601"
             ->(value) { Time.iso8601(value) rescue false }
           else
