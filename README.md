@@ -58,6 +58,25 @@ endpoints:
           required: true
 ```
 
+## Custom Validator
+You can define your custom validator as a child class of Rack::Spec::Validators::Base.
+
+```ruby
+# Example:
+#
+# parameters:
+#   title:
+#     fword: false
+#
+class FwordValidator < Rack::Spec::Validators::Base
+  register_as "fword"
+
+  def valid?
+    value.nil? || !value.start_with?("f")
+  end
+end
+```
+
 ## Exception Handling
 The error behavior is customizable because Rack::Request is two-layer structure of
 Rack::Spec::ExceptionHandler & Rack::Spec::Validation.
