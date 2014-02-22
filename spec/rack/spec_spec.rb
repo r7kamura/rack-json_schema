@@ -7,40 +7,29 @@ describe Rack::Spec do
   include Rack::Test::Methods
 
   let(:app) do
-    described_class.new(original_app, spec: spec)
-  end
-
-  let(:original_app) do
-    ->(env) do
-      [200, {}, ["OK"]]
+    Rack::Builder.app do
+      use Rack::Spec, spec: YAML.load(<<-EOS.strip_heredoc)
+        meta:
+          baseUri: http://api.example.com/
+        endpoints:
+          /recipes:
+            GET:
+              queryParameters:
+                page:
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                private:
+                  type: boolean
+                rank:
+                  type: float
+                time:
+                  type: iso8601
+      EOS
+      run ->(env) do
+        [200, {}, ["OK"]]
+      end
     end
-  end
-
-  let(:spec) do
-    YAML.load(yaml)
-  end
-
-  let(:yaml) do
-    <<-EOS.strip_heredoc
-      ---
-      meta:
-        baseUri: http://api.example.com/
-
-      endpoints:
-        /recipes:
-          GET:
-            queryParameters:
-              page:
-                type: integer
-                minimum: 1
-                maximum: 10
-              private:
-                type: boolean
-              rank:
-                type: float
-              time:
-                type: iso8601
-    EOS
   end
 
   let(:path) do
