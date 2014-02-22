@@ -1,5 +1,4 @@
 require "spec_helper"
-require "active_support/core_ext/string/strip"
 require "rack/test"
 require "yaml"
 
