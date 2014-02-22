@@ -38,6 +38,12 @@ endpoints:
           type: float
         time:
           type: iso8601
+        kind:
+          type: string
+          only:
+            - mono
+            - di
+            - tri
 ```
 
 ## Development
