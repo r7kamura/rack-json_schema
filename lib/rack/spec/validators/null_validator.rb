@@ -2,7 +2,8 @@ module Rack
   class Spec
     module Validators
       class NullValidator < Base
-        def validate!
+        def valid?
+          true
         end
       end
     end
