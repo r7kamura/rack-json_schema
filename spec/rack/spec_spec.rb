@@ -36,6 +36,7 @@ describe Rack::Spec do
                 title:
                   type: string
                   minimumLength: 3
+                  maximumLength: 10
       EOS
       run ->(env) do
         [200, {}, ["OK"]]
@@ -142,6 +143,13 @@ describe Rack::Spec do
     context "with request body parameter invalid on minimumLength" do
       before do
         params[:title] = "te"
+      end
+      it { should == 400 }
+    end
+
+    context "with request body parameter invalid on minimumLength" do
+      before do
+        params[:title] = "toooooolong"
       end
       it { should == 400 }
     end
