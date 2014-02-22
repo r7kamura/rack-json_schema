@@ -2,6 +2,11 @@ module Rack
   class Spec
     module Validators
       class Base
+        def initialize(key, constraint)
+          @key = key
+          @constraint = constraint
+        end
+
         def validate!(env)
           raise NotImplementedError
         end
