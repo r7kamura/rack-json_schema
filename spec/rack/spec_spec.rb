@@ -8,37 +8,7 @@ describe Rack::Spec do
 
   let(:app) do
     Rack::Builder.app do
-      use Rack::Spec, spec: YAML.load(<<-EOS.strip_heredoc)
-        meta:
-          baseUri: http://api.example.com/
-        endpoints:
-          /recipes:
-            GET:
-              parameters:
-                page:
-                  type: integer
-                  minimum: 1
-                  maximum: 10
-                private:
-                  type: boolean
-                rank:
-                  type: float
-                time:
-                  type: iso8601
-                kind:
-                  type: string
-                  only:
-                    - mono
-                    - di
-                    - tri
-            POST:
-              parameters:
-                title:
-                  type: string
-                  minimumLength: 3
-                  maximumLength: 10
-                  required: true
-      EOS
+      use Rack::Spec, spec: YAML.load_file("spec/fixtures/spec.yml")
       run ->(env) do
         [200, {}, ["OK"]]
       end
