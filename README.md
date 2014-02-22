@@ -12,7 +12,7 @@ require "rack"
 require "rack/spec"
 require "yaml"
 
-use Rack::Spec, spec: YAML.load("spec.yml")
+use Rack::Spec, spec: YAML.load_file("spec.yml")
 
 run ->(env) do
   [200, {}, ["OK"]]
