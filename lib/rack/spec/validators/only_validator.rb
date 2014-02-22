@@ -4,8 +4,6 @@ module Rack
       class OnlyValidator < Base
         register_as "only"
 
-        private
-
         def valid?
           value.nil? || constraint.include?(value)
         end

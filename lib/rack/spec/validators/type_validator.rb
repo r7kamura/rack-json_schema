@@ -21,11 +21,11 @@ module Rack
         pattern "integer", /\A-?\d+\z/
         pattern "iso8601", ->(value) { Time.iso8601(value) rescue false }
 
-        private
-
         def valid?
           value.nil? || pattern === value
         end
+
+        private
 
         def pattern
           self.class.patterns[constraint]

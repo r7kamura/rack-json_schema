@@ -4,8 +4,6 @@ module Rack
       class MaximumLengthValidator < Base
         register_as "maximumLength"
 
-        private
-
         def valid?
           value.nil? || value.length <= constraint
         end

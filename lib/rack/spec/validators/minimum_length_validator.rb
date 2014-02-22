@@ -4,8 +4,6 @@ module Rack
       class MinimumLengthValidator < Base
         register_as "minimumLength"
 
-        private
-
         def valid?
           value.nil? || value.length >= constraint
         end

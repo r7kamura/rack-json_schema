@@ -25,11 +25,11 @@ module Rack
           end
         end
 
-        private
-
         def valid?
           raise NotImplementedError
         end
+
+        private
 
         def value
           @value ||= request.params[@key]

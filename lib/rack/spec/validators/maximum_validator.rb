@@ -4,8 +4,6 @@ module Rack
       class MaximumValidator < Base
         register_as "maximum"
 
-        private
-
         def valid?
           value.nil? || value.to_f <= constraint
         end
