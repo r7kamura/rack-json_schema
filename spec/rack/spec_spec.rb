@@ -147,7 +147,7 @@ describe Rack::Spec do
       it { should == 400 }
     end
 
-    context "with request body parameter invalid on minimumLength" do
+    context "with request body parameter invalid on maximumLength" do
       before do
         params[:title] = "toooooolong"
       end
