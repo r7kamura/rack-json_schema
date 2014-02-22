@@ -59,7 +59,9 @@ endpoints:
 ```
 
 ## Custom Validator
-You can define your custom validator as a child class of Rack::Spec::Validators::Base.
+Custom validator can be defined by inheriting Rack::Spec::Validators::Base.
+The following FwordValidator rejects any parameter starting with "F".
+See [lib/rack/spec/validators](https://github.com/r7kamura/rack-spec/tree/master/lib/rack/spec/validators) for more examples.
 
 ```ruby
 # Example:
@@ -72,7 +74,7 @@ class FwordValidator < Rack::Spec::Validators::Base
   register_as "fword"
 
   def valid?
-    value.nil? || !value.start_with?("f")
+    value.nil? || !value.start_with?("F")
   end
 end
 ```
