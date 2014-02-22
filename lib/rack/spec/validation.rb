@@ -13,12 +13,12 @@ module Rack
 
       private
 
-      def document
-        Source.new(@options[:source])
+      def spec
+        Spec.new(@options[:spec])
       end
 
       def query_parameters_validator
-        @query_parameters_validator ||= Validators::QueryParametersValidator.new(document)
+        @query_parameters_validator ||= Validators::QueryParametersValidator.new(spec)
       end
     end
   end

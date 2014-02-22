@@ -1,6 +1,6 @@
 require "rack/builder"
 require "rack/spec/exception_handler"
-require "rack/spec/source"
+require "rack/spec/spec"
 require "rack/spec/validation"
 require "rack/spec/validation_error"
 require "rack/spec/validator_factory"
@@ -17,7 +17,7 @@ module Rack
     def initialize(app, options)
       @app = Rack::Builder.app do
         use Rack::Spec::ExceptionHandler
-        use Rack::Spec::Validation, source: options[:source]
+        use Rack::Spec::Validation, options
         run app
       end
     end

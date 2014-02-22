@@ -1,6 +1,6 @@
 module Rack
   class Spec
-    class Source < Hash
+    class Spec < Hash
       def initialize(hash)
         hash.each do |key, value|
           self[key] = value

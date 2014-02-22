@@ -2,12 +2,12 @@ module Rack
   class Spec
     module Validators
       class QueryParametersValidator
-        def initialize(document)
-          @document = document
+        def initialize(spec)
+          @spec = spec
         end
 
         def validate!(env)
-          parameters = @document.reach("endpoints", env["PATH_INFO"], env["REQUEST_METHOD"], "queryParameters") || {}
+          parameters = @spec.reach("endpoints", env["PATH_INFO"], env["REQUEST_METHOD"], "queryParameters") || {}
           parameters.each do |key, hash|
             hash.each do |type, constraint|
               ValidatorFactory.build(key, type, constraint).validate!(env)

@@ -7,7 +7,7 @@ describe Rack::Spec do
   include Rack::Test::Methods
 
   let(:app) do
-    described_class.new(original_app, source: source)
+    described_class.new(original_app, spec: spec)
   end
 
   let(:original_app) do
@@ -16,7 +16,7 @@ describe Rack::Spec do
     end
   end
 
-  let(:source) do
+  let(:spec) do
     YAML.load(yaml)
   end
 
