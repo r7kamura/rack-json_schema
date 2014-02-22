@@ -14,6 +14,7 @@ module Rack
           end
         end
 
+        register "boolean", /\A(?:true|false)\z/
         register "float", /\A-?\d+(?:\.\d+)*\z/
         register "integer", /\A-?\d+\z/
         register "iso8601", ->(value) { Time.iso8601(value) rescue false }

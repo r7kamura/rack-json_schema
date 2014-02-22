@@ -34,6 +34,8 @@ describe Rack::Spec do
                 type: integer
                 minimum: 1
                 maximum: 10
+              private:
+                type: boolean
               rank:
                 type: float
               time:
@@ -61,9 +63,10 @@ describe Rack::Spec do
   describe "#call" do
     context "with valid request" do
       before do
-        params[:time] = "2000-01-01T00:00:00+00:00"
         params[:page] = 5
+        params[:private] = "false"
         params[:rank] = 2.0
+        params[:time] = "2000-01-01T00:00:00+00:00"
       end
       it { should == 200 }
     end
@@ -78,6 +81,13 @@ describe Rack::Spec do
     context "with query parameter invalid on float" do
       before do
         params[:rank] = "x"
+      end
+      it { should == 400 }
+    end
+
+    context "with query parameter invalid on boolean" do
+      before do
+        params[:private] = 1
       end
       it { should == 400 }
     end
