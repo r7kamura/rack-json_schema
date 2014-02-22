@@ -30,4 +30,6 @@ endpoints:
       queryParameters:
         page:
           type: integer
+          minimum: 1
+          maximum: 10
 ```
