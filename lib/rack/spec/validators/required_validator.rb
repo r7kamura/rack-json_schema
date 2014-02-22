@@ -2,6 +2,8 @@ module Rack
   class Spec
     module Validators
       class RequiredValidator < Base
+        register_as "required"
+
         private
 
         def valid?

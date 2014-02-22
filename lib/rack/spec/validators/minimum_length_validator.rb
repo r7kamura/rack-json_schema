@@ -2,6 +2,8 @@ module Rack
   class Spec
     module Validators
       class MinimumLengthValidator < Base
+        register_as "minimumLength"
+
         private
 
         def valid?

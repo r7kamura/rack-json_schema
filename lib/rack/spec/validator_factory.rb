@@ -14,14 +14,6 @@ module Rack
           validator_classes[type].new(key, constraint, env)
         end
       end
-
-      register "maximum", Validators::MaximumValidator
-      register "maximumLength", Validators::MaximumLengthValidator
-      register "minimum", Validators::MinimumValidator
-      register "minimumLength", Validators::MinimumLengthValidator
-      register "only", Validators::OnlyValidator
-      register "required", Validators::RequiredValidator
-      register "type", Validators::TypeValidator
     end
   end
 end

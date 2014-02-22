@@ -9,15 +9,17 @@ module Rack
             @patterns ||= Hash.new(//)
           end
 
-          def register(name, pattern)
+          def pattern(name, pattern)
             patterns[name] = pattern
           end
         end
 
-        register "boolean", /\A(?:true|false)\z/
-        register "float", /\A-?\d+(?:\.\d+)*\z/
-        register "integer", /\A-?\d+\z/
-        register "iso8601", ->(value) { Time.iso8601(value) rescue false }
+        register_as "type"
+
+        pattern "boolean", /\A(?:true|false)\z/
+        pattern "float", /\A-?\d+(?:\.\d+)*\z/
+        pattern "integer", /\A-?\d+\z/
+        pattern "iso8601", ->(value) { Time.iso8601(value) rescue false }
 
         private
 

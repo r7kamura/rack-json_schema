@@ -2,6 +2,8 @@ module Rack
   class Spec
     module Validators
       class MaximumLengthValidator < Base
+        register_as "maximumLength"
+
         private
 
         def valid?

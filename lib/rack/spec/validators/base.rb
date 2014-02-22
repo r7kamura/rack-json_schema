@@ -2,6 +2,10 @@ module Rack
   class Spec
     module Validators
       class Base
+        def self.register_as(name)
+          ValidatorFactory.register(name, self)
+        end
+
         attr_reader :constraint, :key, :env
 
         def initialize(key, constraint, env)
