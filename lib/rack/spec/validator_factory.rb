@@ -2,25 +2,22 @@ module Rack
   class Spec
     class ValidatorFactory
       class << self
-        def build(key, type, constraint)
-          select_class(type, constraint).new(key, constraint)
+        def validator_classes
+          @validator_classes ||= Hash.new(Validators::NullValidator)
         end
 
-        private
+        def register(name, klass)
+          validator_classes[name] = klass
+        end
 
-        def select_class(type, constraint)
-          case type
-          when "type"
-            Validators::TypeValidator
-          when "minimum"
-            Validators::MinimumValidator
-          when "maximum"
-            Validators::MaximumValidator
-          else
-            Validators::NullValidator
-          end
+        def build(key, type, constraint)
+          validator_classes[type].new(key, constraint)
         end
       end
+
+      register "maximum", Validators::MaximumValidator
+      register "minimum", Validators::MinimumValidator
+      register "type", Validators::TypeValidator
     end
   end
 end
