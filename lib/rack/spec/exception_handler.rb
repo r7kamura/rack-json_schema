@@ -7,7 +7,7 @@ module Rack
 
       def call(env)
         @app.call(env)
-      rescue ValidationError => exception
+      rescue Exceptions::ValidationError => exception
         exception.to_rack_response
       end
     end

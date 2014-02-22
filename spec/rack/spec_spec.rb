@@ -1,6 +1,4 @@
 require "spec_helper"
-require "rack/test"
-require "yaml"
 
 describe Rack::Spec do
   include Rack::Test::Methods

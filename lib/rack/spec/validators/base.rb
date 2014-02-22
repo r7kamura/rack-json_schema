@@ -21,7 +21,7 @@ module Rack
 
         def validate!
           unless valid?
-            raise ValidationError, self
+            raise Exceptions::ValidationError, self
           end
         end
 
