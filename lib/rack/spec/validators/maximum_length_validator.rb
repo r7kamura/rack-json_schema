@@ -9,10 +9,6 @@ module Rack
         def valid?
           value.nil? || value.length <= constraint
         end
-
-        def error_message
-          "Expected #{key} to be equal or shorter than #{constraint}, but in fact #{value.inspect}"
-        end
       end
     end
   end

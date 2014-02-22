@@ -9,10 +9,6 @@ module Rack
         def valid?
           value.nil? || constraint.include?(value)
         end
-
-        def error_message
-          "Expected #{key} to be included in #{constraint}, but in fact #{value.inspect}"
-        end
       end
     end
   end

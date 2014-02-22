@@ -2,8 +2,13 @@ module Rack
   class Spec
     module Validators
       class Base
-        def self.register_as(name)
-          ValidatorFactory.register(name, self)
+        class << self
+          attr_accessor :registered_name
+
+          def register_as(name)
+            self.registered_name = name
+            ValidatorFactory.register(name, self)
+          end
         end
 
         attr_reader :constraint, :key, :env
@@ -16,7 +21,7 @@ module Rack
 
         def validate!
           unless valid?
-            raise ValidationError, error_message
+            raise ValidationError, self
           end
         end
 

@@ -3,12 +3,12 @@ require "json"
 module Rack
   class Spec
     class ValidationError < StandardError
-      def initialize(message)
-        @message = message
+      def initialize(validator)
+        @validator = validator
       end
 
       def message
-        @message
+        "Invalid #{key} on `#{constraint_name}` constraint"
       end
 
       def to_rack_response
@@ -16,6 +16,14 @@ module Rack
       end
 
       private
+
+      def constraint_name
+        @validator.class.registered_name
+      end
+
+      def key
+        @validator.key
+      end
 
       def status
         400
@@ -26,7 +34,7 @@ module Rack
       end
 
       def body
-        { message: @message }.to_json
+        { message: message }.to_json
       end
     end
   end

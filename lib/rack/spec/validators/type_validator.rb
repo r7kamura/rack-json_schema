@@ -27,10 +27,6 @@ module Rack
           value.nil? || pattern === value
         end
 
-        def error_message
-          "Expected #{key} to be #{constraint}, but in fact #{value.inspect}"
-        end
-
         def pattern
           self.class.patterns[constraint]
         end
