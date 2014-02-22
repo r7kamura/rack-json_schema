@@ -36,6 +36,8 @@ describe Rack::Spec do
                 maximum: 10
               rank:
                 type: float
+              time:
+                type: iso8601
     EOS
   end
 
@@ -59,6 +61,7 @@ describe Rack::Spec do
   describe "#call" do
     context "with valid request" do
       before do
+        params[:time] = "2000-01-01T00:00:00+00:00"
         params[:page] = 5
         params[:rank] = 2.0
       end
@@ -75,6 +78,13 @@ describe Rack::Spec do
     context "with query parameter invalid on float" do
       before do
         params[:rank] = "x"
+      end
+      it { should == 400 }
+    end
+
+    context "with query parameter invalid on iso8601" do
+      before do
+        params[:time] = "2000-01-01 00:00:00 +0000"
       end
       it { should == 400 }
     end

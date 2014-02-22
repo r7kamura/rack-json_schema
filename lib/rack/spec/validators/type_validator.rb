@@ -1,10 +1,12 @@
+require "time"
+
 module Rack
   class Spec
     module Validators
       class TypeValidator < Base
         def validate!(env)
           value = extract_value(env) or return
-          unless value.match(pattern)
+          unless pattern === value
             raise ValidationError, "Expected #@key to be #@constraint, but in fact #{value.inspect}"
           end
         end
@@ -17,6 +19,8 @@ module Rack
             /\A-?\d+\z/
           when "float"
             /\A-?\d+(?:\.\d+)*\z/
+          when "iso8601"
+            ->(value) { Time.iso8601(value) rescue false }
           else
             //
           end
