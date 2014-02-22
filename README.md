@@ -50,6 +50,7 @@ endpoints:
           type: string
           minimumLength: 3
           maximumLength: 10
+          required: true
 ```
 
 ## Development
