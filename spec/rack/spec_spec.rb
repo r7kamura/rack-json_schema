@@ -48,18 +48,28 @@ describe Rack::Spec do
     {}
   end
 
+  subject do
+    get path, params, env
+    last_response.status
+  end
+
   describe "#call" do
-    context "with invalid type query parameter" do
+    context "with valid request" do
+      it { should == 200 }
+    end
+
+    context "with query parameter invalid to integer constraint" do
       before do
         params[:page] = "x"
       end
+      it { should == 400 }
+    end
 
-      it "returns 400 with JSON error message" do
-        get path, params, env
-        last_response.status.should == 400
-        last_response.header["Content-Type"].should == "application/json"
-        last_response.body.should be_json_as(message: String)
+    context "with invalid minimum query parameter" do
+      before do
+        params[:page] = "0"
       end
+      it { should == 400 }
     end
   end
 end

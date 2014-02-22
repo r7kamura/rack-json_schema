@@ -1,13 +1,13 @@
 require "rack/builder"
 require "rack/spec/exception_handler"
-require "rack/spec/null_validator"
-require "rack/spec/query_parameters_validator"
 require "rack/spec/source"
-require "rack/spec/type_validator"
 require "rack/spec/validation"
 require "rack/spec/validation_error"
-require "rack/spec/validator"
 require "rack/spec/validator_factory"
+require "rack/spec/validators/integer_validator"
+require "rack/spec/validators/minimum_validator"
+require "rack/spec/validators/null_validator"
+require "rack/spec/validators/query_parameters_validator"
 require "rack/spec/version"
 
 module Rack
