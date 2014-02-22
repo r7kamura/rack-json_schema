@@ -31,6 +31,11 @@ describe Rack::Spec do
                     - mono
                     - di
                     - tri
+            POST:
+              queryParameters:
+                title:
+                  type: string
+                  minimumLength: 3
       EOS
       run ->(env) do
         [200, {}, ["OK"]]
@@ -51,11 +56,15 @@ describe Rack::Spec do
   end
 
   subject do
-    get path, params, env
+    send verb, path, params, env
     last_response.status
   end
 
-  describe "#call" do
+  describe "GET" do
+    let(:verb) do
+      :get
+    end
+
     context "with valid request" do
       before do
         params[:page] = 5
@@ -112,6 +121,27 @@ describe Rack::Spec do
     context "with query parameter invalid on only" do
       before do
         params[:kind] = "tetra"
+      end
+      it { should == 400 }
+    end
+  end
+
+  describe "POST" do
+    let(:verb) do
+      :post
+    end
+
+    context "with valid request" do
+      before do
+        params[:title] = "test"
+      end
+
+      it { should == 200 }
+    end
+
+    context "with request body parameter invalid on minimumLength" do
+      before do
+        params[:title] = "te"
       end
       it { should == 400 }
     end
