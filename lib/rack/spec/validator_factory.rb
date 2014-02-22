@@ -20,6 +20,7 @@ module Rack
       register "minimum", Validators::MinimumValidator
       register "minimumLength", Validators::MinimumLengthValidator
       register "only", Validators::OnlyValidator
+      register "required", Validators::RequiredValidator
       register "type", Validators::TypeValidator
     end
   end

@@ -37,6 +37,7 @@ describe Rack::Spec do
                   type: string
                   minimumLength: 3
                   maximumLength: 10
+                  required: true
       EOS
       run ->(env) do
         [200, {}, ["OK"]]
@@ -128,15 +129,15 @@ describe Rack::Spec do
   end
 
   describe "POST" do
+    before do
+      params[:title] = "test"
+    end
+
     let(:verb) do
       :post
     end
 
     context "with valid request" do
-      before do
-        params[:title] = "test"
-      end
-
       it { should == 200 }
     end
 
@@ -150,6 +151,13 @@ describe Rack::Spec do
     context "with request body parameter invalid on maximumLength" do
       before do
         params[:title] = "toooooolong"
+      end
+      it { should == 400 }
+    end
+
+    context "with request body parameter invalid on required" do
+      before do
+        params.delete(:title)
       end
       it { should == 400 }
     end
