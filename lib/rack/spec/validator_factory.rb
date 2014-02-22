@@ -14,6 +14,8 @@ module Rack
             Validators::IntegerValidator
           when type == "minimum"
             Validators::MinimumValidator
+          when type == "maximum"
+            Validators::MaximumValidator
           else
             Validators::NullValidator
           end

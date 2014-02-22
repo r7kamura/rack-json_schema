@@ -4,7 +4,7 @@ module Rack
       class IntegerValidator < Base
         def validate!(env)
           value = extract_value(env)
-          if value && value =~ /\A-?\d+\z/
+          if value && value !~ /\A-?\d+\z/
             raise ValidationError, "Expected #@key to be #@constraint, but in fact #{value.inspect}"
           end
         end

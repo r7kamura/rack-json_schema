@@ -33,6 +33,7 @@ describe Rack::Spec do
               page:
                 type: integer
                 minimum: 1
+                maximum: 10
     EOS
   end
 
@@ -55,6 +56,9 @@ describe Rack::Spec do
 
   describe "#call" do
     context "with valid request" do
+      before do
+        params[:page] = 5
+      end
       it { should == 200 }
     end
 
@@ -67,7 +71,14 @@ describe Rack::Spec do
 
     context "with invalid minimum query parameter" do
       before do
-        params[:page] = "0"
+        params[:page] = 0
+      end
+      it { should == 400 }
+    end
+
+    context "with invalid maximum query parameter" do
+      before do
+        params[:page] = 11
       end
       it { should == 400 }
     end
