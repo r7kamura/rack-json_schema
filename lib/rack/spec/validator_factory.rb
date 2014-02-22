@@ -9,12 +9,12 @@ module Rack
         private
 
         def select_class(type, constraint)
-          case
-          when type == "type" && constraint == "integer"
-            Validators::IntegerValidator
-          when type == "minimum"
+          case type
+          when "type"
+            Validators::TypeValidator
+          when "minimum"
             Validators::MinimumValidator
-          when type == "maximum"
+          when "maximum"
             Validators::MaximumValidator
           else
             Validators::NullValidator
