@@ -25,6 +25,12 @@ describe Rack::Spec do
                   type: float
                 time:
                   type: iso8601
+                kind:
+                  type: string
+                  only:
+                    - mono
+                    - di
+                    - tri
       EOS
       run ->(env) do
         [200, {}, ["OK"]]
@@ -56,6 +62,7 @@ describe Rack::Spec do
         params[:private] = "false"
         params[:rank] = 2.0
         params[:time] = "2000-01-01T00:00:00+00:00"
+        params[:kind] = "mono"
       end
       it { should == 200 }
     end
@@ -98,6 +105,13 @@ describe Rack::Spec do
     context "with query parameter invalid on maximum" do
       before do
         params[:page] = 11
+      end
+      it { should == 400 }
+    end
+
+    context "with query parameter invalid on only" do
+      before do
+        params[:kind] = "tetra"
       end
       it { should == 400 }
     end

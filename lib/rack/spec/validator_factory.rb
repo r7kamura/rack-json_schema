@@ -17,6 +17,7 @@ module Rack
 
       register "maximum", Validators::MaximumValidator
       register "minimum", Validators::MinimumValidator
+      register "only", Validators::OnlyValidator
       register "type", Validators::TypeValidator
     end
   end
