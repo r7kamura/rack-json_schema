@@ -31,10 +31,6 @@ module Rack
           raise NotImplementedError
         end
 
-        def error_message
-          raise NotImplementedError
-        end
-
         def value
           @value ||= request.params[@key]
         end
