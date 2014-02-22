@@ -7,7 +7,7 @@ module Rack
       end
 
       def call(env)
-        query_parameters_validator.validate!(env)
+        parameters_validator.validate!(env)
         @app.call(env)
       end
 
@@ -17,8 +17,8 @@ module Rack
         Spec.new(@options[:spec])
       end
 
-      def query_parameters_validator
-        @query_parameters_validator ||= Validators::QueryParametersValidator.new(spec)
+      def parameters_validator
+        @parameters_validator ||= Validators::ParametersValidator.new(spec)
       end
     end
   end

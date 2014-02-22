@@ -14,7 +14,7 @@ describe Rack::Spec do
         endpoints:
           /recipes:
             GET:
-              queryParameters:
+              parameters:
                 page:
                   type: integer
                   minimum: 1
@@ -32,7 +32,7 @@ describe Rack::Spec do
                     - di
                     - tri
             POST:
-              queryParameters:
+              parameters:
                 title:
                   type: string
                   minimumLength: 3
