@@ -32,6 +32,8 @@ endpoints:
           type: integer
           minimum: 1
           maximum: 10
+        private:
+          type: boolean
         rank:
           type: float
         time:
