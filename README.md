@@ -33,3 +33,14 @@ endpoints:
           minimum: 1
           maximum: 10
 ```
+
+## Development
+```sh
+# setup
+git clone git@github.com:r7kamura/rack-spec.git
+cd rack-spec
+bundle install
+
+# testing
+bundle exec rspec
+```
