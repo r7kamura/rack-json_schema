@@ -1,10 +1,10 @@
 # Rack::Spec
-Define specifications of your Rack application.
+Spec based web-application middleware for Rack.
 
-* Rack::Spec::Validation - validates requests along given specifications
-* Rack::Spec::ExceptionHandler - rescues exceptions raised from Rack::Spec::Validation
-* Rack::Spec::Restful - provides strongly-conventional RESTful API endpoints
 * Rack::Spec - all-in-one middleware
+ * Rack::Spec::Validation - validates requests along given specifications
+ * Rack::Spec::ExceptionHandler - rescues exceptions raised from Rack::Spec::Validation
+ * Rack::Spec::Restful - provides strongly-conventional RESTful API endpoints
 
 ```ruby
 use Rack::Spec, spec: YAML.load_file("spec.yml")

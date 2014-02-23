@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Rack::Spec::VERSION
   spec.authors       = ["Ryo Nakamura"]
   spec.email         = ["r7kamura@gmail.com"]
-  spec.summary       = "Define specifications of your Rack application."
+  spec.summary       = "Spec based web-application middleware for Rack."
 
   spec.homepage      = "https://github.com/r7kamura/rack-spec"
   spec.license       = "MIT"
