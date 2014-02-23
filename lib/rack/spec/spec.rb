@@ -1,9 +1,21 @@
+require "addressable/template"
+
 module Rack
   class Spec
     class Spec < Hash
       def initialize(hash)
         hash.each do |key, value|
           self[key] = value
+        end
+      end
+
+      def find_endpoint(env)
+        self["endpoints"].find do |path, source|
+          if Addressable::Template.new(path).extract(env["PATH_INFO"])
+            if endpoint = source[env["REQUEST_METHOD"]]
+              break endpoint
+            end
+          end
         end
       end
 

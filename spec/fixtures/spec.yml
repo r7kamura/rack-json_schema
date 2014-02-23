@@ -27,3 +27,10 @@ endpoints:
           minimumLength: 3
           maximumLength: 10
           required: true
+  /recipes/{id}:
+    GET:
+      description: Get the recipe
+    PUT:
+      description: Update the recipe
+    DELETE:
+      description: Delete the recipe

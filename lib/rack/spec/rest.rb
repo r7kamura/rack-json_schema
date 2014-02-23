@@ -4,12 +4,13 @@ require "active_support/core_ext/string/inflections"
 module Rack
   class Spec
     class Rest
-      def initialize(options = {})
+      def initialize(app, options = {})
+        @app = app
         @options = options
       end
 
       def call(env)
-        Proxy.new(spec, env).call
+        Proxy.new(@app, spec, env).call
       end
 
       private
@@ -19,7 +20,8 @@ module Rack
       end
 
       class Proxy
-        def initialize(spec, env)
+        def initialize(app, spec, env)
+          @app = app
           @spec = spec
           @env = env
         end
@@ -33,14 +35,14 @@ module Rack
               [(response.try(:body) || response).to_json]
             ]
           else
-            raise Exceptions::NoEndpointError, self
+            @app.call(@env)
           end
         end
 
         private
 
         def endpoint
-          @endpoint ||= @spec.reach("endpoints", path, request_method)
+          @endpoint ||= @spec.find_endpoint(@env)
         end
 
         def handler_args

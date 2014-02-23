@@ -18,7 +18,7 @@ module Rack
         private
 
         def parameters
-          @spec.reach("endpoints", @env["PATH_INFO"], @env["REQUEST_METHOD"], "parameters") || {}
+          @spec.find_endpoint(@env).try(:[], "parameters") || []
         end
       end
     end
