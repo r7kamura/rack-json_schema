@@ -93,9 +93,9 @@ It recognizes a preferred instruction from the request method & path, then tries
 
 | verb   | path          | instruction                |
 | ----   | ----          | ----                       |
-| GET    | /recipes/     | Recipe.index(id)           |
+| GET    | /recipes/     | Recipe.index(params)       |
 | GET    | /recipes/{id} | Recipe.show(id, params)    |
-| POST   | /recipes/     | Recipe.create(id)          |
+| POST   | /recipes/     | Recipe.create(params)      |
 | PUT    | /recipes/{id} | Recipe.update(id, params)  |
 | DELETE | /recipes/{id} | Recipe.destroy(id, params) |
 
