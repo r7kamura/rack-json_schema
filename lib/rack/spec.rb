@@ -1,7 +1,6 @@
 require "rack/builder"
 require "rack/spec/exception_handler"
 require "rack/spec/exceptions/base"
-require "rack/spec/exceptions/no_endpoint_error"
 require "rack/spec/exceptions/validation_error"
 require "rack/spec/restful"
 require "rack/spec/spec"
