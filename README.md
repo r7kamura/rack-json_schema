@@ -91,13 +91,13 @@ Rack::Spec::Restful provides strongly-conventional RESTful API endpoints as a ra
 ### Convention
 It recognizes a preferred instruction from the request method & path, then tries to call it.
 
-| verb   | path          | instruction                |
-| ----   | ----          | ----                       |
-| GET    | /recipes/     | Recipe.index(params)       |
-| GET    | /recipes/{id} | Recipe.show(id, params)    |
-| POST   | /recipes/     | Recipe.create(params)      |
-| PUT    | /recipes/{id} | Recipe.update(id, params)  |
-| DELETE | /recipes/{id} | Recipe.destroy(id, params) |
+| verb   | path          | instruction           |
+| ----   | ----          | ----                  |
+| GET    | /recipes      | Recipe.get(params)    |
+| GET    | /recipes/{id} | Recipe.get(params)    |
+| POST   | /recipes      | Recipe.post(params)   |
+| PUT    | /recipes/{id} | Recipe.put(params)    |
+| DELETE | /recipes/{id} | Recipe.delete(params) |
 
 ### Example
 You must implement correspondent class & methods for your API.

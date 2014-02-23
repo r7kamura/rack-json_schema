@@ -11,8 +11,9 @@ module Rack
 
       def find_endpoint(env)
         self["endpoints"].find do |path, source|
-          if Addressable::Template.new(path).extract(env["PATH_INFO"])
+          if parameters = Addressable::Template.new(path).extract(env["PATH_INFO"])
             if endpoint = source[env["REQUEST_METHOD"]]
+              env["rack-spec.uri_parameters"] = parameters
               break endpoint
             end
           end

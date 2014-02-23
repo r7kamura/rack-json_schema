@@ -8,24 +8,24 @@ describe Rack::Spec do
       "Recipe",
       Class.new do
         class << self
-          def index(params)
-            [
-              { name: "test" }
-            ]
+          def get(params)
+            if params["id"]
+              { name: "test#{params["id"]}"}
+            else
+              [
+                { name: "test" }
+              ]
+            end
           end
 
-          def show(id, params)
-            { name: "test#{id}" }
-          end
-
-          def create(params)
+          def post(params)
             { name: "test" }
           end
 
-          def update(id, params)
+          def put(params)
           end
 
-          def destroy(id, params)
+          def delete(params)
           end
         end
       end
@@ -177,7 +177,7 @@ describe Rack::Spec do
     end
 
     context "with GET /recipes/{id}" do
-      it "calls Recipe.show(id, params)" do
+      it "calls Recipe.get(params)" do
         get "/recipes/1"
         response.status.should == 200
         response.body.should be_json_as(name: "test1")
@@ -189,7 +189,7 @@ describe Rack::Spec do
         params[:title] = "test"
       end
 
-      it "calls Recipe.create(params)" do
+      it "calls Recipe.post(params)" do
         post "/recipes", params
         response.status.should == 201
         response.body.should be_json_as(name: "test")
@@ -197,14 +197,14 @@ describe Rack::Spec do
     end
 
     context "with PUT /recipes/{id}" do
-      it "calls Recipe.update(id, params)" do
+      it "calls Recipe.put(params)" do
         put "/recipes/1"
         response.status.should == 204
       end
     end
 
     context "with DELETE /recipes/{id}" do
-      it "calls Recipe.update(id, params)" do
+      it "calls Recipe.delete(params)" do
         delete "/recipes/1"
         response.status.should == 204
       end

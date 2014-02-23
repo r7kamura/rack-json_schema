@@ -28,7 +28,7 @@ module Rack
 
         def call
           if endpoint
-            response = handler_class.send(handler_method_name, *handler_args)
+            response = handler_class.send(handler_method_name, params)
             [
               response.try(:status) || default_status,
               default_header.merge(response.try(:header) || {}),
@@ -45,14 +45,6 @@ module Rack
           @endpoint ||= @spec.find_endpoint(@env)
         end
 
-        def handler_args
-          if id
-            [id, params]
-          else
-            [params]
-          end
-        end
-
         def handler_class
           path_segments[1].singularize.camelize.constantize
         end
@@ -66,20 +58,7 @@ module Rack
         end
 
         def handler_method_name
-          case request_method
-          when "GET"
-            if id
-              :show
-            else
-              :index
-            end
-          when "POST"
-            :create
-          when "PUT"
-            :update
-          when "DELETE"
-            :destroy
-          end
+          request_method.downcase
         end
 
         def path
@@ -95,7 +74,7 @@ module Rack
         end
 
         def params
-          request.params
+          request.params.merge(@env["rack-spec.uri_parameters"])
         end
 
         def default_status
