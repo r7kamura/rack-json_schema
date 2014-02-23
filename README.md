@@ -1,23 +1,24 @@
 # Rack::Spec
 Define specifications of your Rack application.
 
-Rack::Spec is a rack-middleware and works as a validation layer for your rack-application.
-It loads spec definition (= a pure Hash object in specific format) to validate each request.
-If the request is not valid on your definition,
-it returns 400 response with applicaiton/json body by default.
-
 ## Installation
 ```
 gem install rack-spec
 ```
 
-## Usage
+## Rack::Spec::Validation
+Rack::Spec::Validation is a rack-middleware and works as a validation layer for your rack-application.
+It loads spec definition (= a pure Hash object in specific format) to validate each request.
+If the request is not valid on your definition, it will raise Rack::Spec::Exceptions::ValidationError.
+Rack::Spec::ExceptionHandler is a utility rack-middleware to rescue validation error and return 400.
+
 ```ruby
 require "rack"
 require "rack/spec"
 require "yaml"
 
-use Rack::Spec, spec: YAML.load_file("spec.yml")
+use Rack::Spec::ExceptionHandler
+use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
 
 run ->(env) do
   [200, {}, ["OK"]]
@@ -80,14 +81,35 @@ end
 ```
 
 ## Exception Handling
-The error behavior is customizable because Rack::Request is two-layer structure of
-Rack::Spec::ExceptionHandler & Rack::Spec::Validation.
-To customize the error behavior,
-directly use Rack::Spec::Validation with your favorite exception handler.
+Replace Rack::Spec::ExceptionHandler to customize error behavior.
 
 ```ruby
 use MyExceptionHandler # Rack::Spec::ValidationError must be rescued
 use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
+```
+
+## Rack::Spec::Restful
+Rack::Spec::Restful provides strongly conventional RESTful APIs as a rack-middleware.
+It recognizes a preferred instruction from the request method & path, then tries to call it.
+
+| verb   | path          | instruction                |
+| ----   | ----          | ----                       |
+| GET    | /recipes/     | Recipe.index(id)           |
+| GET    | /recipes/{id} | Recipe.show(id, params)    |
+| POST   | /recipes/     | Recipe.create(id)          |
+| PUT    | /recipes/{id} | Recipe.update(id, params)  |
+| DELETE | /recipes/{id} | Recipe.destroy(id, params) |
+
+```ruby
+class Recipe
+  def self.index(params)
+    order(params[:order]).page(params[:page])
+  end
+
+  def self.show(id, params)
+    find(id)
+  end
+end
 ```
 
 ## Development
