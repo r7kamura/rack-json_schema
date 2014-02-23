@@ -123,11 +123,6 @@ run ->(env) do
 end
 ```
 
-## Installation
-```
-gem install rack-spec
-```
-
 ## Development
 ```sh
 # setup
