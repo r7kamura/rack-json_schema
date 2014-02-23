@@ -1,11 +1,6 @@
 # Rack::Spec
 Define specifications of your Rack application.
 
-## Installation
-```
-gem install rack-spec
-```
-
 ## Rack::Spec::Validation
 Rack::Spec::Validation is a rack-middleware and works as a validation layer for your rack-application.
 It loads spec definition (= a pure Hash object in specific format) to validate each request.
@@ -124,6 +119,11 @@ use Rack::Spec::Restful, spec: YAML.load_file("spec.yml")
 run ->(env) do
   [404, {}, ["Not Found"]]
 end
+```
+
+## Installation
+```
+gem install rack-spec
 ```
 
 ## Development
