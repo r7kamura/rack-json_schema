@@ -84,7 +84,7 @@ end
 Replace Rack::Spec::ExceptionHandler to customize error behavior.
 
 ```ruby
-use MyExceptionHandler # Rack::Spec::ValidationError must be rescued
+use MyExceptionHandler # Rack::Spec::Exceptions::ValidationError must be rescued
 use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
 ```
 
