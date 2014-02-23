@@ -104,12 +104,12 @@ You must implement correspondent class & methods for your API.
 
 ```ruby
 class Recipe
-  def self.index(params)
-    order(params[:order]).page(params[:page])
-  end
-
-  def self.show(id, params)
-    find(id)
+  def self.get(params)
+    if params[:id]
+      find(params[:id])
+    else
+      order(params[:order]).page(params[:page])
+    end
   end
 end
 
