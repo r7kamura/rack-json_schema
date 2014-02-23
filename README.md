@@ -59,7 +59,7 @@ endpoints:
           required: true
 ```
 
-## Custom Validator
+### Custom Validator
 Custom validator can be defined by inheriting Rack::Spec::Validators::Base.
 The following FwordValidator rejects any parameter starting with "F".
 See [lib/rack/spec/validators](https://github.com/r7kamura/rack-spec/tree/master/lib/rack/spec/validators) for more examples.
@@ -80,7 +80,7 @@ class FwordValidator < Rack::Spec::Validators::Base
 end
 ```
 
-## Exception Handling
+### Exception Handling
 Replace Rack::Spec::ExceptionHandler to customize error behavior.
 
 ```ruby
@@ -90,6 +90,8 @@ use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
 
 ## Rack::Spec::Restful
 Rack::Spec::Restful provides strongly conventional RESTful APIs as a rack-middleware.
+
+### Convention
 It recognizes a preferred instruction from the request method & path, then tries to call it.
 
 | verb   | path          | instruction                |
@@ -100,6 +102,9 @@ It recognizes a preferred instruction from the request method & path, then tries
 | PUT    | /recipes/{id} | Recipe.update(id, params)  |
 | DELETE | /recipes/{id} | Recipe.destroy(id, params) |
 
+### Example
+You must implement correspondent class & methods for your API.
+
 ```ruby
 class Recipe
   def self.index(params)
@@ -109,6 +114,15 @@ class Recipe
   def self.show(id, params)
     find(id)
   end
+end
+
+require "rack"
+require "rack/spec"
+require "yaml"
+
+use Rack::Spec::Restful, spec: YAML.load_file("spec.yml")
+run ->(env) do
+  [404, {}, ["Not Found"]]
 end
 ```
 
