@@ -1,3 +1,6 @@
+## v0.0.5
+* Change RESTful resource API (#get, #post, #put, and #delete)
+
 ## v0.0.4
 * Add Rack::Spec::Restful, strongly conventional RESTful API Provider
 
