@@ -1,3 +1,6 @@
+## v0.0.4
+* Add Rack::Spec::Restful, strongly conventional RESTful API Provider
+
 ## v0.0.3
 * Add a new constraint: required
 * More DRY way for validator definition
