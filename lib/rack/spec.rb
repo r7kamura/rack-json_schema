@@ -25,6 +25,7 @@ module Rack
       @app = Rack::Builder.app do
         use Rack::Spec::ExceptionHandler
         use Rack::Spec::Validation, options
+        use Rack::Spec::Restful, options
         run app
       end
     end
