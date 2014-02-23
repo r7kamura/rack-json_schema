@@ -1,7 +1,7 @@
 require "spec_helper"
 require "ostruct"
 
-describe Rack::Spec::Rest do
+describe Rack::Spec::Restful do
   include Rack::Test::Methods
 
   before do
@@ -35,7 +35,7 @@ describe Rack::Spec::Rest do
 
   let(:app) do
     Rack::Builder.app do
-      use Rack::Spec::Rest, spec: YAML.load_file("spec/fixtures/spec.yml")
+      use Rack::Spec::Restful, spec: YAML.load_file("spec/fixtures/spec.yml")
       run ->(env) do
         [404, {}, ["Not Found"]]
       end

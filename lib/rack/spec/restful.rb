@@ -3,7 +3,7 @@ require "active_support/core_ext/string/inflections"
 
 module Rack
   class Spec
-    class Rest
+    class Restful
       def initialize(app, options = {})
         @app = app
         @options = options
