@@ -1,23 +1,14 @@
 # Rack::Spec
 Define specifications of your Rack application.
 
-## Rack::Spec::Validation
-Rack::Spec::Validation is a rack-middleware and works as a validation layer for your rack-application.
-It loads spec definition (= a pure Hash object in specific format) to validate each request.
-If the request is not valid on your definition, it will raise Rack::Spec::Exceptions::ValidationError.
-Rack::Spec::ExceptionHandler is a utility rack-middleware to rescue validation error and return 400.
+* Rack::Spec::Validation - validates requests along given specifications
+* Rack::Spec::ExceptionHandler - rescues exceptions raised from Rack::Spec::Validation
+* Rack::Spec::Restful - provides strongly-conventional RESTful API endpoints
+* Rack::Spec - all-in-one middleware
 
 ```ruby
-require "rack"
-require "rack/spec"
-require "yaml"
-
-use Rack::Spec::ExceptionHandler
-use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
-
-run ->(env) do
-  [200, {}, ["OK"]]
-end
+use Rack::Spec, spec: YAML.load_file("spec.yml")
+run ->(env) { [404, {}, ["Not Found"]] }
 ```
 
 ```yaml
@@ -54,6 +45,17 @@ endpoints:
           required: true
 ```
 
+## Rack::Spec::Validation
+Rack::Spec::Validation is a rack-middleware and works as a validation layer for your rack-application.
+It loads spec definition (= a pure Hash object in specific format) to validate each request.
+If the request is not valid on your definition, it will raise Rack::Spec::Exceptions::ValidationError.
+Rack::Spec::ExceptionHandler is a utility rack-middleware to rescue validation error and return 400.
+
+```ruby
+use Rack::Spec::ExceptionHandler
+use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
+```
+
 ### Custom Validator
 Custom validator can be defined by inheriting Rack::Spec::Validators::Base.
 The following FwordValidator rejects any parameter starting with "F".
@@ -84,7 +86,7 @@ use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
 ```
 
 ## Rack::Spec::Restful
-Rack::Spec::Restful provides strongly conventional RESTful APIs as a rack-middleware.
+Rack::Spec::Restful provides strongly-conventional RESTful API endpoints as a rack-middleware.
 
 ### Convention
 It recognizes a preferred instruction from the request method & path, then tries to call it.
