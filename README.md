@@ -1,135 +1,59 @@
 # Rack::Spec
-Spec based web-application middleware for Rack.
-
-* Rack::Spec - all-in-one middleware
- * Rack::Spec::Validation - validates requests along given specifications
- * Rack::Spec::ExceptionHandler - rescues exceptions raised from Rack::Spec::Validation
- * Rack::Spec::Restful - provides strongly-conventional RESTful API endpoints
+Auto-define your API server from given specs.
 
 ```ruby
+# Pass a Hash as API specs
 use Rack::Spec, spec: YAML.load_file("spec.yml")
-run ->(env) { [404, {}, ["Not Found"]] }
+
+# Or pass a callable object that takes an env as an argument
+use Rack::Spec, spec: ->(env) { ... }
 ```
+
+## Spec
+You can use the [JSON Schema](http://json-schema.org/) format to define your API server.
 
 ```yaml
-# spec.yml
-meta:
-  baseUri: http://api.example.com/
-
-endpoints:
-  /recipes:
-    GET:
-      parameters:
-        page:
-          type: integer
-          minimum: 1
-          maximum: 10
-        private:
-          type: boolean
-        rank:
-          type: float
-        time:
-          type: iso8601
-        kind:
-          type: string
-          only:
-            - mono
-            - di
-            - tri
-    POST:
-      parameters:
-        title:
-          type: string
-          minimumLength: 3
-          maximumLength: 10
-          required: true
-```
-
-## Rack::Spec::Validation
-Rack::Spec::Validation is a rack-middleware and works as a validation layer for your rack-application.
-It loads spec definition (= a pure Hash object in specific format) to validate each request.
-If the request is not valid on your definition, it will raise Rack::Spec::Exceptions::ValidationError.
-Rack::Spec::ExceptionHandler is a utility rack-middleware to rescue validation error and return 400.
-
-```ruby
-use Rack::Spec::ExceptionHandler
-use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
-```
-
-### Custom Validator
-Custom validator can be defined by inheriting Rack::Spec::Validators::Base.
-The following FwordValidator rejects any parameter starting with "F".
-See [lib/rack/spec/validators](https://github.com/r7kamura/rack-spec/tree/master/lib/rack/spec/validators) for more examples.
-
-```ruby
-# Example:
-#
-# parameters:
-#   title:
-#     fword: false
-#
-class FwordValidator < Rack::Spec::Validators::Base
-  register_as "fword"
-
-  def valid?
-    value.nil? || !value.start_with?("F")
-  end
-end
-```
-
-### Exception Handling
-Replace Rack::Spec::ExceptionHandler to customize error behavior.
-
-```ruby
-use MyExceptionHandler # Rack::Spec::Exceptions::ValidationError must be rescued
-use Rack::Spec::Validation, spec: YAML.load_file("spec.yml")
-```
-
-## Rack::Spec::Restful
-Rack::Spec::Restful provides strongly-conventional RESTful API endpoints as a rack-middleware.
-
-### Convention
-It recognizes a preferred instruction from the request method & path, then tries to call it.
-
-| verb   | path          | instruction           |
-| ----   | ----          | ----                  |
-| GET    | /recipes      | Recipe.get(params)    |
-| GET    | /recipes/{id} | Recipe.get(params)    |
-| POST   | /recipes      | Recipe.post(params)   |
-| PUT    | /recipes/{id} | Recipe.put(params)    |
-| DELETE | /recipes/{id} | Recipe.delete(params) |
-
-### Example
-You must implement correspondent class & methods for your API.
-
-```ruby
-class Recipe
-  def self.get(params)
-    if params[:id]
-      find(params[:id])
-    else
-      order(params[:order]).page(params[:page])
-    end
-  end
-end
-
-require "rack"
-require "rack/spec"
-require "yaml"
-
-use Rack::Spec::Restful, spec: YAML.load_file("spec.yml")
-run ->(env) do
-  [404, {}, ["Not Found"]]
-end
-```
-
-## Development
-```sh
-# setup
-git clone git@github.com:r7kamura/rack-spec.git
-cd rack-spec
-bundle install
-
-# testing
-bundle exec rspec
+# Example
+$schema: http://json-schema.org/draft-04/hyper-schema
+title: My example API
+type: object
+definitions:
+  recipe:
+    type: object
+    description: Cooking recipe
+    $schema: http://json-schema.org/draft-04/hyper-schema
+    description: Recipe object
+    properties:
+      html_url:
+        $ref: "#/definitions/recipe/definitions/html_url"
+      name:
+        $ref: "#/definitions/recipe/definitions/name"
+    definitions:
+      id:
+        type: integer
+        description: Recipe ID
+        example: 1
+        readOnly: true
+      name:
+        type: string
+        description: A name of the recipe
+      html_url:
+        type: string
+        description: URL of recipe page
+        readOnly: true
+    links:
+      -
+        href: /recipes
+        method: GET
+      -
+        href: /recipes/{(#/definitions/recipe/definitions/id)}
+        method: PUT
+        schema:
+          type: object
+          properties:
+            name:
+              $rel: "#/definitions/recipe/definitions/name"
+properties:
+  recipe:
+    $ref: "#/definitions/recipe"
 ```
