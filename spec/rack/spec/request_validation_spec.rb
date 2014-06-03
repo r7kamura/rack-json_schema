@@ -39,15 +39,27 @@ describe Rack::Spec::RequestValidation do
     response.status
   end
 
-  describe "GET /recipes" do
+  describe "#call" do
     let(:verb) do
       :get
     end
 
     let(:path) do
-      "/recipes"
+      "/apps"
     end
 
-    it { should == 200 }
+    context "with defined route" do
+      it { should == 200 }
+    end
+
+    context "with undefined route" do
+      let(:path) do
+        "/undefined"
+      end
+
+      it "raises Rack::Spec::RequestValidation::LinkNotFound" do
+        expect { subject }.to raise_error(Rack::Spec::RequestValidation::LinkNotFound)
+      end
+    end
   end
 end
