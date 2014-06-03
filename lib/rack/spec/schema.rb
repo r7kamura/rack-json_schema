@@ -22,11 +22,11 @@ module Rack
 
       # @param method [String] Uppercase HTTP method name (e.g. GET, POST)
       # @param path [String] Path string, which may include URI template
-      # @return [true, false] True if any link is defined in JSON schema for the given method & path
+      # @return [JsonSchema::Scheam::Link, nil] Link defined for the given method and path
       # @example
-      #   schema.has_link_for?(method: "GET", path: "/recipes/{+id}") #=> false
-      def has_link_for?(method: nil, path: nil)
-        links_indexed_by_method[method].any? do |link|
+      #   schema.has_link_for?(method: "GET", path: "/recipes/{+id}") #=> nil
+      def link_for(method: nil, path: nil)
+        links_indexed_by_method[method].find do |link|
           %r<^#{link.href.gsub(/\{(.*?)\}/, "[^/]+")}$> === path
         end
       end

@@ -36,14 +36,35 @@ module Rack
           case
           when !has_link_for_current_action?
             raise LinkNotFound
+          when has_body? && !has_valid_content_type?
+            raise InvalidContentType
           end
         end
 
         private
 
-        # @return [true, false] True if link is defined for the current action(= method + path)
+        # @return [true, false] True if request body is not empty
+        def has_body?
+          !body.empty?
+        end
+
+        # @return [true, false] True if no or matched content type given
+        def has_valid_content_type?
+          content_type.nil? || Rack::Mime.match?(link.enc_type, content_type)
+        end
+
+        # @return [true, false] True if link is defined for the current action
         def has_link_for_current_action?
-          @schema.has_link_for?(method: method, path: path)
+          !!link
+        end
+
+        # @return [JsonSchema::Schema::Link, nil] Link for the current action
+        def link
+          if instance_variable_defined?(:@link)
+            @link
+          else
+            @link = @schema.link_for(method: method, path: path)
+          end
         end
 
         # Treats env as a utility object to easily extract method and path
@@ -65,14 +86,36 @@ module Rack
         def path
           request.path_info
         end
+
+        # @return [String] Request content type
+        # @example
+        #   path #=> "application/json"
+        def content_type
+          request.content_type
+        end
+
+        # @return [String] request body
+        def body
+          if instance_variable_defined?(:@body)
+            @body
+          else
+            @body = request.body.read
+            request.body.rewind
+            @body
+          end
+        end
       end
 
       # Base error class for Rack::Spec::RequestValidation
       class Error < StandardError
       end
 
-      # Error class raised to requests to undefined routes
+      # Error class for case when no link defined for given request
       class LinkNotFound < Error
+      end
+
+      # Error class for invalid request content type
+      class InvalidContentType < Error
       end
     end
   end

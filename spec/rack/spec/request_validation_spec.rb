@@ -61,5 +61,27 @@ describe Rack::Spec::RequestValidation do
         expect { subject }.to raise_error(Rack::Spec::RequestValidation::LinkNotFound)
       end
     end
+
+    context "with request body & invalid content type" do
+      before do
+        env["CONTENT_TYPE"] = "text/plain"
+      end
+
+      let(:verb) do
+        :post
+      end
+
+      let(:path) do
+        "/apps"
+      end
+
+      let(:params) do
+        {}.to_json
+      end
+
+      it "raises Rack::Spec::RequestValidation::InvalidContentType" do
+        expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidContentType)
+      end
+    end
   end
 end
