@@ -1,3 +1,6 @@
+## v0.1.1
+* Add ErrorHandler rack middleware for building error response
+
 ## v0.1.0
 * Rebuilt entire code based on JSON schema
 
