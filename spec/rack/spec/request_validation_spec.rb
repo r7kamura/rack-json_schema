@@ -6,6 +6,7 @@ describe Rack::Spec::RequestValidation do
   let(:app) do
     data = schema
     Rack::Builder.app do
+      use Rack::Spec::ErrorHandler
       use Rack::Spec::RequestValidation, schema: data
       run ->(env) do
         [200, {}, ["OK"]]
@@ -75,8 +76,12 @@ describe Rack::Spec::RequestValidation do
         "/undefined"
       end
 
-      it "raises Rack::Spec::RequestValidation::LinkNotFound" do
-        expect { subject }.to raise_error(Rack::Spec::RequestValidation::LinkNotFound)
+      it "returns link_not_found error" do
+        should == 404
+        response.body.should be_json_as(
+          id: "link_not_found",
+          message: "Not found",
+        )
       end
     end
 
@@ -85,8 +90,12 @@ describe Rack::Spec::RequestValidation do
         env["CONTENT_TYPE"] = "text/plain"
       end
 
-      it "raises Rack::Spec::RequestValidation::InvalidContentType" do
-        expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidContentType)
+      it "returns invalid_content_type error" do
+        should == 400
+        response.body.should be_json_as(
+          id: "invalid_content_type",
+          message: "Invalid content type",
+        )
       end
     end
 
@@ -99,8 +108,12 @@ describe Rack::Spec::RequestValidation do
         { name: "ab" }.to_json
       end
 
-      it "raises Rack::Spec::RequestValidation::InvalidParameter" do
-        expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidParameter)
+      it "returns invalid_parameter error" do
+        should == 400
+        response.body.should be_json_as(
+          id: "invalid_parameter",
+          message: %r<\AInvalid request\.\n#/name: failed schema .+: Expected string to match pattern>,
+        )
       end
     end
 
@@ -109,8 +122,12 @@ describe Rack::Spec::RequestValidation do
         "malformed"
       end
 
-      it "raises Rack::Spec::RequestValidation::InvalidParameter" do
-        expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidParameter)
+      it "returns invalid_parameter error" do
+        should == 400
+        response.body.should be_json_as(
+          id: "invalid_json",
+          message: "Request body wasn't valid JSON",
+        )
       end
     end
   end

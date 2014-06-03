@@ -38,19 +38,25 @@ module Rack
             raise LinkNotFound
           when has_body? && !has_valid_content_type?
             raise InvalidContentType
-          when has_schema? && !has_valid_parameter?
-            raise InvalidParameter
+          when has_body? && !has_valid_json?
+            raise InvalidJson
+          when has_body? && has_schema? && !has_valid_parameter?
+            raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
           end
         end
 
         private
 
-        # @return [true, false] True if request parameters are all valid
-        def has_valid_parameter?
-          valid, errors = link.schema.validate(parameters)
-          valid
+        def has_valid_json?
+          parameters
+          true
         rescue MultiJson::ParseError
           false
+        end
+
+        # @return [true, false] True if request parameters are all valid
+        def has_valid_parameter?
+          schema_validation_result[0]
         end
 
         # @return [true, false] True if any schema is defined for the current action
@@ -71,6 +77,21 @@ module Rack
         # @return [true, false] True if link is defined for the current action
         def has_link_for_current_action?
           !!link
+        end
+
+        # @return [Array] A result of schema validation for the current action
+        def schema_validation_result
+          @schema_validation_result ||= link.schema.validate(parameters)
+        end
+
+        # @return [Array] Errors of schema validation
+        def schema_validation_errors
+          schema_validation_result[1]
+        end
+
+        # @return [String] Joined error message to the result of schema validation
+        def schema_validation_error_message
+          JsonSchema::SchemaError.aggregate(schema_validation_errors).join("\n")
         end
 
         # @return [JsonSchema::Schema::Link, nil] Link for the current action
@@ -134,19 +155,63 @@ module Rack
       end
 
       # Base error class for Rack::Spec::RequestValidation
-      class Error < StandardError
+      class Error < Error
       end
 
       # Error class for case when no link defined for given request
       class LinkNotFound < Error
+        def initialize
+          super("Not found")
+        end
+
+        def status
+          404
+        end
+
+        def id
+          "link_not_found"
+        end
       end
 
       # Error class for invalid request content type
       class InvalidContentType < Error
+        def initialize
+          super("Invalid content type")
+        end
+
+        def status
+          400
+        end
+
+        def id
+          "invalid_content_type"
+        end
+      end
+
+      # Error class for invalid JSON
+      class InvalidJson < Error
+        def initialize
+          super("Request body wasn't valid JSON")
+        end
+
+        def status
+          400
+        end
+
+        def id
+          "invalid_json"
+        end
       end
 
       # Error class for invalid request parameter
       class InvalidParameter < Error
+        def status
+          400
+        end
+
+        def id
+          "invalid_parameter"
+        end
       end
     end
   end
