@@ -4,12 +4,17 @@ describe Rack::Spec::RequestValidation do
   include Rack::Test::Methods
 
   let(:app) do
+    schema = schema
     Rack::Builder.app do
-      use Rack::Spec::RequestValidation
+      use Rack::Spec::RequestValidation, schema: schema
       run ->(env) do
         [200, {}, ["OK"]]
       end
     end
+  end
+
+  let(:schema) do
+    {}
   end
 
   let(:response) do
