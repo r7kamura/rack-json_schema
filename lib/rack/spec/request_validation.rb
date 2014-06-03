@@ -38,10 +38,25 @@ module Rack
             raise LinkNotFound
           when has_body? && !has_valid_content_type?
             raise InvalidContentType
+          when has_schema? && !has_valid_parameter?
+            raise InvalidParameter
           end
         end
 
         private
+
+        # @return [true, false] True if request parameters are all valid
+        def has_valid_parameter?
+          valid, errors = link.schema.validate(parameters)
+          valid
+        rescue MultiJson::ParseError
+          false
+        end
+
+        # @return [true, false] True if any schema is defined for the current action
+        def has_schema?
+          !!link.schema
+        end
 
         # @return [true, false] True if request body is not empty
         def has_body?
@@ -104,6 +119,18 @@ module Rack
             @body
           end
         end
+
+        # @return [Hash] Request parameters decoded from JSON
+        # @raise [MultiJson::ParseError]
+        def parameters
+          @parameters ||= begin
+            if has_body?
+              MultiJson.decode(body)
+            else
+              {}
+            end
+          end
+        end
       end
 
       # Base error class for Rack::Spec::RequestValidation
@@ -116,6 +143,10 @@ module Rack
 
       # Error class for invalid request content type
       class InvalidContentType < Error
+      end
+
+      # Error class for invalid request parameter
+      class InvalidParameter < Error
       end
     end
   end

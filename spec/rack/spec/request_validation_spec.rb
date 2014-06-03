@@ -39,6 +39,24 @@ describe Rack::Spec::RequestValidation do
     response.status
   end
 
+  shared_context "with valid POST request", :with_valid_post_request do
+    before do
+      env["CONTENT_TYPE"] = "application/json"
+    end
+
+    let(:verb) do
+      :post
+    end
+
+    let(:path) do
+      "/apps"
+    end
+
+    let(:params) do
+      { name: "abcd" }.to_json
+    end
+  end
+
   describe "#call" do
     let(:verb) do
       :get
@@ -62,25 +80,37 @@ describe Rack::Spec::RequestValidation do
       end
     end
 
-    context "with request body & invalid content type" do
+    context "with request body & invalid content type", :with_valid_post_request do
       before do
         env["CONTENT_TYPE"] = "text/plain"
       end
 
-      let(:verb) do
-        :post
-      end
-
-      let(:path) do
-        "/apps"
-      end
-
-      let(:params) do
-        {}.to_json
-      end
-
       it "raises Rack::Spec::RequestValidation::InvalidContentType" do
         expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidContentType)
+      end
+    end
+
+    context "with valid request property", :with_valid_post_request do
+      it { should == 200 }
+    end
+
+    context "with invalid request property", :with_valid_post_request do
+      let(:params) do
+        { name: "ab" }.to_json
+      end
+
+      it "raises Rack::Spec::RequestValidation::InvalidParameter" do
+        expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidParameter)
+      end
+    end
+
+    context "with malformed JSON request body", :with_valid_post_request do
+      let(:params) do
+        "malformed"
+      end
+
+      it "raises Rack::Spec::RequestValidation::InvalidParameter" do
+        expect { subject }.to raise_error(Rack::Spec::RequestValidation::InvalidParameter)
       end
     end
   end
