@@ -7,7 +7,7 @@ module Rack
       # @param json_schema [JsonSchema::Schema]
       # @return [Array] An array of JsonSchema::Schema::Link
       def self.extract_links(json_schema)
-        links = json_schema.links
+        links = json_schema.links.select {|link| link.method && link.href }
         links + json_schema.properties.map {|key, schema| extract_links(schema) }.flatten
       end
 
@@ -26,8 +26,8 @@ module Rack
       # @example
       #   schema.has_link_for?(method: "GET", path: "/recipes/{+id}") #=> false
       def has_link_for?(method: nil, path: nil)
-        routes[method].any? do |href|
-          %r<^#{href.gsub(/\{(.*?)\}/, "[^/]+")}$> === path
+        links_indexed_by_method[method].any? do |link|
+          %r<^#{link.href.gsub(/\{(.*?)\}/, "[^/]+")}$> === path
         end
       end
 
@@ -35,26 +35,18 @@ module Rack
 
       # @return [Array] All links defined in given JSON schema
       # @example
-      #   schema.links #=> [{ href: "/recipes", method: "GET" }]
+      #   schema.links #=> [#<JsonSchema::Schema::Link>]
       def links
-        @links ||= self.class.extract_links(@json_schema).map do |link|
-          if link.method && link.href
-            {
-              href: link.href,
-              method: link.method.to_s.upcase,
-            }
-          end
-        end.compact
+        @links ||= self.class.extract_links(@json_schema)
       end
 
-      # @return [Hash] A key-value pair of HTTP method and an Array of href paths under the method
+      # @return [Hash] A key-value pair of HTTP method and an Array of links
       # @note This Hash always returns an Array for any key
       # @example
-      #   schema.routes #=> { "GET" => ["/recipes"] }
-      def routes
-        @routes ||= links.inject(Hash.new {|hash, key| hash[key] = [] }) do |result, link|
-          method = link[:method]
-          result[method] << link[:href]
+      #   schema.links_indexed_by_method #=> { "GET" => [#<JsonSchema::Schema::Link>] }
+      def links_indexed_by_method
+        @links_indexed_by_method ||= links.inject(Hash.new {|hash, key| hash[key] = [] }) do |result, link|
+          result[link.method.to_s.upcase] << link
           result
         end
       end
