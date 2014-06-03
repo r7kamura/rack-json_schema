@@ -53,6 +53,8 @@ definitions:
           properties:
             name:
               $rel: "#/definitions/recipe/definitions/name"
+          required:
+            - name
 properties:
   recipe:
     $ref: "#/definitions/recipe"
