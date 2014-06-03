@@ -1,3 +1,6 @@
+## v0.1.0
+* Rebuilt entire code based on JSON schema
+
 ## v0.0.5
 * Change RESTful resource API (#get, #post, #put, and #delete)
 
