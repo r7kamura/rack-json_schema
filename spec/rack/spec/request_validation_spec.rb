@@ -4,9 +4,9 @@ describe Rack::Spec::RequestValidation do
   include Rack::Test::Methods
 
   let(:app) do
-    schema = schema
+    data = schema
     Rack::Builder.app do
-      use Rack::Spec::RequestValidation, schema: schema
+      use Rack::Spec::RequestValidation, schema: data
       run ->(env) do
         [200, {}, ["OK"]]
       end
@@ -14,7 +14,12 @@ describe Rack::Spec::RequestValidation do
   end
 
   let(:schema) do
-    {}
+    str = File.read(schema_path)
+    JSON.parse(str)
+  end
+
+  let(:schema_path) do
+    File.expand_path("../../../fixtures/schema.json", __FILE__)
   end
 
   let(:response) do
