@@ -1,5 +1,5 @@
 # Rack::Spec
-Generate API server from [JSON Schema](http://json-schema.org/).
+[JSON Schema](http://json-schema.org/) based Rack middlewares.
 
 ## Usage
 ```ruby
