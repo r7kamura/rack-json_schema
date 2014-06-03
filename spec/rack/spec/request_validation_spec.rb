@@ -1,5 +1,43 @@
 require "spec_helper"
 
 describe Rack::Spec::RequestValidation do
-  it { should be_true }
+  include Rack::Test::Methods
+
+  let(:app) do
+    Rack::Builder.app do
+      use Rack::Spec::RequestValidation
+      run ->(env) do
+        [200, {}, ["OK"]]
+      end
+    end
+  end
+
+  let(:response) do
+    last_response
+  end
+
+  let(:env) do
+    {}
+  end
+
+  let(:params) do
+    {}
+  end
+
+  subject do
+    send(verb, path, params, env)
+    response.status
+  end
+
+  describe "GET /recipes" do
+    let(:verb) do
+      :get
+    end
+
+    let(:path) do
+      "/recipes"
+    end
+
+    it { should == 200 }
+  end
 end

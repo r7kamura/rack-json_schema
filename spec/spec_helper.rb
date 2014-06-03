@@ -1,4 +1,6 @@
+require "rack/builder"
 require "rack/spec"
+require "rack/test"
 
 RSpec.configure do |config|
   config.treat_symbols_as_metadata_keys_with_true_values = true
