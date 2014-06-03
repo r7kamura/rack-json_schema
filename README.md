@@ -23,9 +23,12 @@ $ curl http://localhost:9292/apps -H "Content-Type: application/json" -d '{"name
 ```
 
 ### Rack::Spec::RequestValidation
-* Raise `Rack::Spec::RequestValidation::LinkNotFound` when given request is not defined in schema
-* Raise `Rack::Spec::RequestValidation::InvalidContentType` for invalid content type
-* Raise `Rack::Spec::RequestValidation::InvalidParameter` for invalid request parameter
+Validates request and raises following errors:
+
+* Rack::Spec::RequestValidation::InvalidContentType
+* Rack::Spec::RequestValidation::InvalidJson
+* Rack::Spec::RequestValidation::InvalidParameter
+* Rack::Spec::RequestValidation::LinkNotFound
 
 ### Rack::Spec::ErrorHandler
 Returns appropriate error response including following properties when RequestValidation raises error.
@@ -41,9 +44,11 @@ Rack::Spec::Error
 |
 Rack::Spec::RequestValidation::Error
 |
-|--Rack::Spec::RequestValidation::LinkNotFound
-|
 |--Rack::Spec::RequestValidation::InvalidContentType
 |
-`--Rack::Spec::RequestValidation::InvalidParameter
+|--Rack::Spec::RequestValidation::InvalidJson
+|
+|--Rack::Spec::RequestValidation::InvalidParameter
+|
+`--Rack::Spec::RequestValidation::LinkNotFound
 ```
