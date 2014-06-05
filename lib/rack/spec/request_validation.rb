@@ -71,7 +71,7 @@ module Rack
 
         # @return [true, false] True if no or matched content type given
         def has_valid_content_type?
-          content_type.nil? || Rack::Mime.match?(link.enc_type, content_type)
+          mime_type.nil? || Rack::Mime.match?(link.enc_type, mime_type)
         end
 
         # @return [true, false] True if link is defined for the current action
@@ -123,11 +123,11 @@ module Rack
           request.path_info
         end
 
-        # @return [String] Request content type
+        # @return [String, nil] Request MIME Type specified in Content-Type header field
         # @example
-        #   path #=> "application/json"
-        def content_type
-          request.content_type
+        #   mime_type #=> "application/json"
+        def mime_type
+          request.content_type.split(";").first if request.content_type
         end
 
         # @return [String] request body

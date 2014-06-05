@@ -103,6 +103,13 @@ describe Rack::Spec::RequestValidation do
       it { should == 200 }
     end
 
+    context "with suffixed content type", :with_valid_post_request do
+      before do
+        env["CONTENT_TYPE"] = "application/json; charset=utf8"
+      end
+      it { should == 200 }
+    end
+
     context "with invalid request property", :with_valid_post_request do
       let(:params) do
         { name: "ab" }.to_json
