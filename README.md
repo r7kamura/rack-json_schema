@@ -34,7 +34,7 @@ Validates request and raises following errors:
 * Rack::Spec::RequestValidation::InvalidParameter
 * Rack::Spec::RequestValidation::LinkNotFound
 
-### Rack::Spec::RequestValidation
+### Rack::Spec::ResponseValidation
 Validates response and raises following errors:
 
 * Rack::Spec::RequestValidation::InvalidResponseContentType
@@ -43,8 +43,14 @@ Validates response and raises following errors:
 ### Rack::Spec::ErrorHandler
 Returns appropriate error response including following properties when RequestValidation raises error.
 
-* id: Error type identifier (e.g. `link_not_found`, `invalid_content_type`)
-* message: Human readable message (e.g. `Not Found`, `Invalid Content-Type`)
+* message: Human readable message
+* id: Error type identifier listed below
+ * invalid_content_type
+ * invalid_json
+ * invalid_parameter
+ * invalid_response_content_type
+ * invalid_response_type
+ * link_not_found
 
 ### Errors
 ```
