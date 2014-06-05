@@ -1,3 +1,6 @@
+## v0.1.3
+* Array response support of Rack::Spec::ResponseValidation
+
 ## v0.1.2
 * Change Content-Type validation policy
 * Add Rack::Spec::ResponseValidation

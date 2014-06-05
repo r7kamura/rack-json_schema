@@ -22,7 +22,11 @@ describe Rack::Spec do
   end
 
   let(:response_body) do
-    response_data.to_json
+    if verb == :get
+      [response_data].to_json
+    else
+      response_data.to_json
+    end
   end
 
   let(:response_data) do

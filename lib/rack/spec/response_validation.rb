@@ -46,7 +46,21 @@ module Rack
 
         # @return [true, false] True if given data is valid to the JSON schema
         def valid?
-          !has_link_for_current_action? || validator.validate(data)
+          !has_link_for_current_action? || validator.validate(example_item)
+        end
+
+        # @return [Hash] Choose an item from response data, to be validated
+        def example_item
+          if has_list_data?
+            data.first
+          else
+            data
+          end
+        end
+
+        # @return [true, false] True if response is intended to be list data
+        def has_list_data?
+          link.rel == "instances" && !link.target_schema
         end
 
         # @return [Array, Hash] Response body data, decoded from JSON
