@@ -9,6 +9,7 @@
       "type": [
         "object"
       ],
+      "required": ["id"],
       "definitions": {
         "id": {
           "description": "unique identifier of app",

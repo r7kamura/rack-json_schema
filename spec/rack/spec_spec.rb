@@ -1,17 +1,35 @@
 require "spec_helper"
 
-describe Rack::Spec::RequestValidation do
+describe Rack::Spec do
   include Rack::Test::Methods
 
   let(:app) do
-    data = schema
+    local_schema = schema
+    local_response_body = response_body
+    local_response_headers = response_headers
     Rack::Builder.app do
       use Rack::Spec::ErrorHandler
-      use Rack::Spec::RequestValidation, schema: data
+      use Rack::Spec::RequestValidation, schema: local_schema
+      use Rack::Spec::ResponseValidation, schema: local_schema
       run ->(env) do
-        [200, {}, ["OK"]]
+        [200, local_response_headers, [local_response_body]]
       end
     end
+  end
+
+  let(:response_headers) do
+    { "Content-Type" => "application/json" }
+  end
+
+  let(:response_body) do
+    response_data.to_json
+  end
+
+  let(:response_data) do
+    {
+      id: "01234567-89ab-cdef-0123-456789abcdef",
+      name: "example",
+    }
   end
 
   let(:schema) do
@@ -20,7 +38,7 @@ describe Rack::Spec::RequestValidation do
   end
 
   let(:schema_path) do
-    File.expand_path("../../../fixtures/schema.json", __FILE__)
+    File.expand_path("../../fixtures/schema.json", __FILE__)
   end
 
   let(:response) do
@@ -58,7 +76,7 @@ describe Rack::Spec::RequestValidation do
     end
   end
 
-  describe "#call" do
+  describe "RequestValidation" do
     let(:verb) do
       :get
     end
@@ -134,6 +152,64 @@ describe Rack::Spec::RequestValidation do
         response.body.should be_json_as(
           id: "invalid_json",
           message: "Request body wasn't valid JSON",
+        )
+      end
+    end
+  end
+
+  describe "ResponseValidation" do
+    let(:verb) do
+      :get
+    end
+
+    let(:path) do
+      "/apps"
+    end
+
+    let(:body) do
+      {
+        foo: "bar",
+      }.to_json
+    end
+
+    context "with response content type except for JSON" do
+      let(:response_headers) do
+        { "Content-Type" => "text/plain" }
+      end
+
+      it "returns invalid_response_content_type error" do
+        should == 500
+        response.body.should be_json_as(
+          id: "invalid_response_content_type",
+          message: "Response Content-Type wasn't for JSON",
+        )
+      end
+    end
+
+    context "without required field" do
+      before do
+        response_data.delete(:id)
+      end
+
+      it "returns invalid_response_type error" do
+        should == 500
+        response.body.should be_json_as(
+          id: "invalid_response_type",
+          message: /Missing required keys "id" in object/,
+        )
+      end
+    end
+
+    context "with invalid pattern string field" do
+      before do
+        response_data[:id] = "123"
+      end
+
+      it "returns invalid_response_type error" do
+        should == 500
+        response.body.should be_json_as(
+          id: "invalid_response_type",
+          message: /Expected data to match "uuid" format, value was: 123/,
         )
       end
     end

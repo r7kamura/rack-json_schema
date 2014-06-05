@@ -17,7 +17,7 @@ module Rack
         @app.call(env)
       end
 
-      class Validator
+      class Validator < BaseValidator
         # Utility wrapper method
         def self.call(**args)
           new(**args).call
@@ -74,11 +74,6 @@ module Rack
           mime_type.nil? || Rack::Mime.match?(link.enc_type, mime_type)
         end
 
-        # @return [true, false] True if link is defined for the current action
-        def has_link_for_current_action?
-          !!link
-        end
-
         # @return [Array] A result of schema validation for the current action
         def schema_validation_result
           @schema_validation_result ||= link.schema.validate(parameters)
@@ -92,35 +87,6 @@ module Rack
         # @return [String] Joined error message to the result of schema validation
         def schema_validation_error_message
           JsonSchema::SchemaError.aggregate(schema_validation_errors).join("\n")
-        end
-
-        # @return [JsonSchema::Schema::Link, nil] Link for the current action
-        def link
-          if instance_variable_defined?(:@link)
-            @link
-          else
-            @link = @schema.link_for(method: method, path: path)
-          end
-        end
-
-        # Treats env as a utility object to easily extract method and path
-        # @return [Rack::Request]
-        def request
-          @request ||= Rack::Request.new(@env)
-        end
-
-        # @return [String] HTTP request method
-        # @example
-        #   method #=> "GET"
-        def method
-          request.request_method
-        end
-
-        # @return [String] Request path
-        # @example
-        #   path #=> "/recipes"
-        def path
-          request.path_info
         end
 
         # @return [String, nil] Request MIME Type specified in Content-Type header field

@@ -1,5 +1,6 @@
 ## v0.1.2
 * Change Content-Type validation policy
+* Add Rack::Spec::ResponseValidation
 
 ## v0.1.1
 * Add ErrorHandler rack middleware for building error response

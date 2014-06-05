@@ -3,8 +3,12 @@
 
 ## Usage
 ```ruby
+str = File.read("schema.json")
+schema = JSON.parse(str)
+
 use Rack::Spec::ErrorHandler
-use Rack::Spec::RequestValidation, schema: JSON.parse(File.read("schema.json")))
+use Rack::Spec::RequestValidation, schema: schema
+use Rack::Spec::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
 ```
 
 ### Example
@@ -30,6 +34,12 @@ Validates request and raises following errors:
 * Rack::Spec::RequestValidation::InvalidParameter
 * Rack::Spec::RequestValidation::LinkNotFound
 
+### Rack::Spec::RequestValidation
+Validates response and raises following errors:
+
+* Rack::Spec::RequestValidation::InvalidResponseContentType
+* Rack::Spec::RequestValidation::InvalidResponseType
+
 ### Rack::Spec::ErrorHandler
 Returns appropriate error response including following properties when RequestValidation raises error.
 
@@ -42,13 +52,19 @@ StandardError
 |
 Rack::Spec::Error
 |
-Rack::Spec::RequestValidation::Error
+|--Rack::Spec::RequestValidation::Error
+|  |
+|  |--Rack::Spec::RequestValidation::InvalidContentType
+|  |
+|  |--Rack::Spec::RequestValidation::InvalidJson
+|  |
+|  |--Rack::Spec::RequestValidation::InvalidParameter
+|  |
+|  `--Rack::Spec::RequestValidation::LinkNotFound
 |
-|--Rack::Spec::RequestValidation::InvalidContentType
-|
-|--Rack::Spec::RequestValidation::InvalidJson
-|
-|--Rack::Spec::RequestValidation::InvalidParameter
-|
-`--Rack::Spec::RequestValidation::LinkNotFound
+`--Rack::Spec::ResponseValidation::Error
+   |
+   |--Rack::Spec::ResponseValidation::InvalidResponseContentType
+   |
+   `--Rack::Spec::ResponseValidation::InvalidResponseType
 ```
