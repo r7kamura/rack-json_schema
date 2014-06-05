@@ -10,7 +10,7 @@ module Rack
         @schema = Schema.new(schema)
       end
 
-      # Behaves as a rack-middleware
+      # @raise [Rack::Spec::RequestValidation::Error] Raises if given request is invalid to JSON Schema
       # @param env [Hash] Rack env
       def call(env)
         Validator.call(env: env, schema: @schema)
