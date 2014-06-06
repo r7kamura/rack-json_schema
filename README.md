@@ -67,7 +67,7 @@ $ curl http://localhost:9292/apps
 ```
 
 ### Rack::Spec::Mock
-Generates dummy response by using example property in JSON schema.
+Generates dummy response from JSON schema.
 
 ```sh
 $ curl http://localhost:9292/apps/1
@@ -102,6 +102,7 @@ Returns appropriate error response including following properties when RequestVa
 
 * message: Human readable message
 * id: Error type identifier listed below
+ * example_not_found
  * invalid_content_type
  * invalid_json
  * invalid_parameter
