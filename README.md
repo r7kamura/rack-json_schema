@@ -128,7 +128,7 @@ Rack::Spec::Error
 |
 |--Rack::Spec::Mock::Error
 |  |
-|  `--Rack::Spec::RequestValidation::ExampleNotFound
+|  `--Rack::Spec::Mock::ExampleNotFound
 |
 |--Rack::Spec::RequestValidation::Error
 |  |
