@@ -1,6 +1,7 @@
 require "json"
 require "json_schema"
 require "multi_json"
+require "rack"
 
 require "rack/spec/base_request_handler"
 require "rack/spec/error"
