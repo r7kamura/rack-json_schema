@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "rack"
+require "rack/spec"
+
+begin
+  path = ARGV.shift or raise
+  str = File.read(path)
+rescue
+  puts "Usage: #{$0} schema.json [rack options]"
+  exit
+end
+
+schema = JSON.parse(str)
+app = Rack::Builder.new do
+  use Rack::Spec::ErrorHandler
+  use Rack::Spec::Mock, schema: schema
+  run ->(env) { [404, {}, ["Not found"]] }
+end
+
+options = Rack::Server::Options.new.parse!(ARGV).merge(app: app)
+Rack::Server.start(options)

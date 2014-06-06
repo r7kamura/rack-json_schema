@@ -97,6 +97,15 @@ $ curl http://localhost:9292/recipes
 }
 ```
 
+Note: `specup` executable command is bundled to rackup dummy API server.
+
+```sh
+$ specup schema.json
+[2014-06-06 23:01:35] INFO  WEBrick 1.3.1
+[2014-06-06 23:01:35] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.5.0]
+[2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
+```
+
 ### Rack::Spec::ErrorHandler
 Returns appropriate error response including following properties when RequestValidation raises error.
 

@@ -1,3 +1,6 @@
+## 0.1.5
+* Add `specup` executable
+
 ## 0.1.4
 * Add Rack::Spec::Mock
 * Prettify response JSON
