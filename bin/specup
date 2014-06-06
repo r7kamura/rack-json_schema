@@ -2,6 +2,7 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "rack"
 require "rack/spec"
+require "yaml"
 
 begin
   path = ARGV.shift or raise
@@ -11,7 +12,13 @@ rescue
   exit
 end
 
-schema = JSON.parse(str)
+case File.extname(path)
+when ".yml", ".yaml"
+  schema = YAML.load(str)
+else
+  schema = MultiJson.decode(str)
+end
+
 app = Rack::Builder.new do
   use Rack::Spec::ErrorHandler
   use Rack::Spec::Mock, schema: schema

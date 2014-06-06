@@ -1,3 +1,6 @@
+## 0.1.6
+* Support YAML schema at `specup`
+
 ## 0.1.5
 * Add `specup` executable
 
