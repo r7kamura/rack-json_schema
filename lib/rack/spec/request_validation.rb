@@ -17,7 +17,7 @@ module Rack
         @app.call(env)
       end
 
-      class Validator < BaseValidator
+      class Validator < BaseRequestHandler
         # Utility wrapper method
         def self.call(**args)
           new(**args).call

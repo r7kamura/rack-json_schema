@@ -9,6 +9,7 @@ schema = JSON.parse(str)
 use Rack::Spec::ErrorHandler
 use Rack::Spec::RequestValidation, schema: schema
 use Rack::Spec::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
+use Rack::Spec::Mock, schema: schema if ENV["RACK_ENV"] == "mock"
 ```
 
 ### Example
@@ -27,7 +28,7 @@ $ curl http://localhost:9292/apps -H "Content-Type: application/json" -d '{"name
 ```
 
 ### Rack::Spec::RequestValidation
-Validates request and raises following errors:
+Validates request and raises errors below.
 
 * Rack::Spec::RequestValidation::InvalidContentType
 * Rack::Spec::RequestValidation::InvalidJson
@@ -35,10 +36,39 @@ Validates request and raises following errors:
 * Rack::Spec::RequestValidation::LinkNotFound
 
 ### Rack::Spec::ResponseValidation
-Validates response and raises following errors:
+Validates request and raises errors below.
+This middleware would be used for testing response type in test env or CI.
 
 * Rack::Spec::RequestValidation::InvalidResponseContentType
 * Rack::Spec::RequestValidation::InvalidResponseType
+
+### Rack::Spec::Mock
+Generates dummy response by using example property in JSON schema.
+
+```
+$ curl http://localhost:9292/apps/1
+[
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "example"
+  }
+]
+
+$ curl http://localhost:9292/apps/01234567-89ab-cdef-0123-456789abcdef
+{
+  "id": "01234567-89ab-cdef-0123-456789abcdef",
+  "name": "example"
+}
+
+$ curl http://localhost:9292/apps/1 -d '{"name":"example"}'
+{
+  "id": "01234567-89ab-cdef-0123-456789abcdef",
+  "name": "example"
+}
+
+$ curl http://localhost:9292/recipes
+{"id":"example_not_found","message":"No example found for #/definitions/recipe/id"}
+```
 
 ### Rack::Spec::ErrorHandler
 Returns appropriate error response including following properties when RequestValidation raises error.
@@ -57,6 +87,10 @@ Returns appropriate error response including following properties when RequestVa
 StandardError
 |
 Rack::Spec::Error
+|
+|--Rack::Spec::Mock::Error
+|  |
+|  `--Rack::Spec::RequestValidation::ExampleNotFound
 |
 |--Rack::Spec::RequestValidation::Error
 |  |

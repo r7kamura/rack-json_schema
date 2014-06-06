@@ -18,7 +18,7 @@ module Rack
         end
       end
 
-      class Validator < BaseValidator
+      class Validator < BaseRequestHandler
         # @param env [Hash] Rack env
         # @param response [Array] Rack response
         # @param schema [JsonSchema::Schema] Schema object
@@ -60,11 +60,6 @@ module Rack
           end
         end
 
-        # @return [true, false] True if response is intended to be list data
-        def has_list_data?
-          link.rel == "instances" && !link.target_schema
-        end
-
         # @return [Array, Hash] Response body data, decoded from JSON
         def data
           MultiJson.decode(body)
@@ -74,11 +69,6 @@ module Rack
         # @note The result is memoized for returning errors in invalid case
         def validator
           @validator ||= JsonSchema::Validator.new(schema_for_current_link)
-        end
-
-        # @return [JsonSchema::Schema] Schema for current link, specified by targetSchema or parent schema
-        def schema_for_current_link
-          link.target_schema || link.parent
         end
 
         # @return [Hash] Response headers

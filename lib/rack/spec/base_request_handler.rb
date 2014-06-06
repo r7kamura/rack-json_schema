@@ -1,6 +1,7 @@
 module Rack
   module Spec
-    class BaseValidator
+    # Base class for providing some utility methods to handle Rack env and JSON Schema
+    class BaseRequestHandler
       # Utility wrapper method
       def self.call(**args)
         new(**args).call
@@ -47,6 +48,16 @@ module Rack
       # @return [true, false] True if link is defined for the current action
       def has_link_for_current_action?
         !!link
+      end
+
+      # @return [JsonSchema::Schema] Schema for current link, specified by targetSchema or parent schema
+      def schema_for_current_link
+        link.target_schema || link.parent
+      end
+
+      # @return [true, false] True if response is intended to be list data
+      def has_list_data?
+        link.rel == "instances" && !link.target_schema
       end
     end
   end
