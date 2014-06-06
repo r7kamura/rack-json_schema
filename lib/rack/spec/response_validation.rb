@@ -86,9 +86,9 @@ module Rack
 
         # @return [String] Response body
         def body
-          @response[2].reduce("") do |result, str|
-            result << str
-          end
+          result = ""
+          @response[2].each {|str| result << str }
+          result
         end
       end
 
