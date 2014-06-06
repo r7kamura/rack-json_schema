@@ -1,5 +1,6 @@
 ## 0.1.4
 * Add Rack::Spec::Mock
+* Prettify response JSON
 
 ## v0.1.3
 * Array response support of Rack::Spec::ResponseValidation
