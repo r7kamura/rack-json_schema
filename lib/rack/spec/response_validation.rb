@@ -28,14 +28,16 @@ module Rack
           @schema = schema
         end
 
-        # Raises an error if any error detected
+        # Raises an error if any error detected, skipping validation for non-defined link
         # @raise [Rack::Spec::ResponseValidation::InvalidResponse]
         def call
-          case
-          when !has_json_content_type?
-            raise InvalidResponseContentType
-          when !valid?
-            raise InvalidResponseType, validator.errors
+          if has_link_for_current_action?
+            case
+            when !has_json_content_type?
+              raise InvalidResponseContentType
+            when !valid?
+              raise InvalidResponseType, validator.errors
+            end
           end
         end
 
@@ -46,7 +48,7 @@ module Rack
 
         # @return [true, false] True if given data is valid to the JSON schema
         def valid?
-          !has_link_for_current_action? || validator.validate(example_item)
+          validator.validate(example_item)
         end
 
         # @return [Hash] Choose an item from response data, to be validated
