@@ -1,3 +1,6 @@
+## 0.1.7
+* Reveal `Rack::Spec::Schema#links`
+
 ## 0.1.6
 * Support YAML schema at `specup`
 
