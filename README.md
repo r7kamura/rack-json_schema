@@ -6,6 +6,7 @@
 str = File.read("schema.json")
 schema = JSON.parse(str)
 
+use Rack::Spec::Docs, schema: schema
 use Rack::Spec::ErrorHandler
 use Rack::Spec::RequestValidation, schema: schema
 use Rack::Spec::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
@@ -145,4 +146,55 @@ Rack::Spec::Error
    |--Rack::Spec::ResponseValidation::InvalidResponseContentType
    |
    `--Rack::Spec::ResponseValidation::InvalidResponseType
+```
+
+### Rack::Spec::Docs
+Returns API documentation as a text/plain content, rendered in GitHub flavored Markdown.
+
+* You can give `path` option to change default path: `GET /docs`
+* API documentation is powered by [jdoc](https://github.com/r7kamura/jdoc) gem
+* This middleware is also bundled in the `specup` executable command
+
+```sh
+$ specup schema.json
+[2014-06-06 23:01:35] INFO  WEBrick 1.3.1
+[2014-06-06 23:01:35] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.5.0]
+[2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
+
+$ curl :8080/docs -i
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Server: WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
+Date: Sat, 07 Jun 2014 19:58:04 GMT
+Content-Length: 2175
+Connection: Keep-Alive
+
+# Example API
+* [App](#app)
+ * [GET /apps](#get-apps)
+ * [POST /apps](#post-apps)
+ * [GET /apps/:id](#get-appsid)
+ * [PATCH /apps/:id](#patch-appsid)
+ * [DELETE /apps/:id](#delete-appsid)
+* [Recipe](#recipe)
+ * [GET /recipes](#get-recipes)
+
+## App
+An app is a program to be deployed.
+
+### Properties
+* id - unique identifier of app
+ * Example: `01234567-89ab-cdef-0123-456789abcdef`
+ * Type: string
+ * Format: uuid
+ * ReadOnly: true
+* name - unique name of app
+ * Example: `example`
+ * Type: string
+ * Patern: `(?-mix:^[a-z][a-z0-9-]{3,50}$)`
+
+### GET /apps
+List existing apps.
+
+...
 ```

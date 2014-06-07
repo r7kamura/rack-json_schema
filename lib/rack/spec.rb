@@ -1,3 +1,4 @@
+require "jdoc"
 require "json"
 require "json_schema"
 require "multi_json"
@@ -5,6 +6,7 @@ require "rack"
 
 require "rack/spec/base_request_handler"
 require "rack/spec/error"
+require "rack/spec/docs"
 require "rack/spec/error_handler"
 require "rack/spec/mock"
 require "rack/spec/request_validation"

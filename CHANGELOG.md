@@ -1,3 +1,6 @@
+## 0.1.8
+* Add Rack::Spec::Docs
+
 ## 0.1.7
 * Reveal `Rack::Spec::Schema#links`
 
