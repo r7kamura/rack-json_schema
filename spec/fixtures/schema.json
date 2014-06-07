@@ -50,14 +50,14 @@
         },
         {
           "description": "Delete an existing app.",
-          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fidentity)}",
+          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}",
           "method": "DELETE",
           "rel": "destroy",
           "title": "Delete"
         },
         {
           "description": "Info for existing app.",
-          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fidentity)}",
+          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}",
           "method": "GET",
           "rel": "self",
           "title": "Info"
@@ -71,7 +71,7 @@
         },
         {
           "description": "Update an existing app.",
-          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fidentity)}",
+          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}",
           "method": "PATCH",
           "rel": "update",
           "schema": {
