@@ -31,14 +31,14 @@ module Rack
         end
       end
 
-      private
-
       # @return [Array] All links defined in given JSON schema
       # @example
       #   schema.links #=> [#<JsonSchema::Schema::Link>]
       def links
         @links ||= self.class.extract_links(@json_schema)
       end
+
+      private
 
       # @return [Hash] A key-value pair of HTTP method and an Array of links
       # @note This Hash always returns an Array for any key
