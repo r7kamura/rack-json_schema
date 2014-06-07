@@ -102,6 +102,10 @@ describe Rack::Spec::Mock do
     end
 
     context "without example" do
+      before do
+        schema["definitions"]["recipe"]["definitions"]["id"].delete("example")
+      end
+
       let(:verb) do
         :get
       end

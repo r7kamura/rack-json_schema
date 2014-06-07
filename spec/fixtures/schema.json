@@ -108,6 +108,7 @@
           "description": "unique identifier of recipe",
           "format": "uuid",
           "readOnly": true,
+          "example": 1,
           "type": [
             "string"
           ]
