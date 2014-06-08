@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     class ResponseValidation
       # Behaves as a rack-middleware
       # @param app [Object] Rack application
@@ -10,7 +10,7 @@ module Rack
         @schema = Schema.new(schema)
       end
 
-      # @raise [Rack::Spec::ResponseValidation::Error]
+      # @raise [Rack::JsonSchema::ResponseValidation::Error]
       # @param env [Hash] Rack env
       def call(env)
         @app.call(env).tap do |response|
@@ -29,7 +29,7 @@ module Rack
         end
 
         # Raises an error if any error detected, skipping validation for non-defined link
-        # @raise [Rack::Spec::ResponseValidation::InvalidResponse]
+        # @raise [Rack::JsonSchema::ResponseValidation::InvalidResponse]
         def call
           if has_link_for_current_action?
             case
@@ -68,7 +68,7 @@ module Rack
         # @return [JsonSchema::Validator]
         # @note The result is memoized for returning errors in invalid case
         def validator
-          @validator ||= JsonSchema::Validator.new(schema_for_current_link)
+          @validator ||= ::JsonSchema::Validator.new(schema_for_current_link)
         end
 
         # @return [Hash] Response headers
@@ -84,13 +84,13 @@ module Rack
         end
       end
 
-      # Base error class for Rack::Spec::ResponseValidation
+      # Base error class for Rack::JsonSchema::ResponseValidation
       class Error < Error
       end
 
       class InvalidResponseType < Error
         def initialize(errors)
-          super JsonSchema::SchemaError.aggregate(errors).join(" ")
+          super ::JsonSchema::SchemaError.aggregate(errors).join(" ")
         end
 
         def id

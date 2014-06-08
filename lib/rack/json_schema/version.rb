@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     VERSION = "0.1.8"
   end
 end

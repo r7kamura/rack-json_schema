@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     class Error < StandardError
       # @return [Array] Rack response
       def to_rack_response

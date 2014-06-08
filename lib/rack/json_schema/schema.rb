@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
 
     # Utility wrapper class for JsonSchema::Schema
     class Schema
@@ -15,9 +15,9 @@ module Rack
       # @raise [JsonSchema::SchemaError]
       # @example
       #   hash = JSON.parse("schema.json")
-      #   schema = Rack::Spec::Schema.new(hash)
+      #   schema = Rack::JsonSchema::Schema.new(hash)
       def initialize(schema)
-        @json_schema = JsonSchema.parse!(schema).tap(&:expand_references!)
+        @json_schema = ::JsonSchema.parse!(schema).tap(&:expand_references!)
       end
 
       # @param method [String] Uppercase HTTP method name (e.g. GET, POST)

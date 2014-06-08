@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe Rack::Spec::Docs do
+describe Rack::JsonSchema::Docs do
   include Rack::Test::Methods
 
   let(:app) do
     local_docs_path = docs_path
     local_schema = schema
     Rack::Builder.app do
-      use Rack::Spec::Docs, path: local_docs_path, schema: local_schema
+      use Rack::JsonSchema::Docs, path: local_docs_path, schema: local_schema
       run ->(env) do
         [
           200,

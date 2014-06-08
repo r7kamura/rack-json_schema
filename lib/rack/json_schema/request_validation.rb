@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     class RequestValidation
       # Behaves as a rack-middleware
       # @param app [Object] Rack application
@@ -10,7 +10,7 @@ module Rack
         @schema = Schema.new(schema)
       end
 
-      # @raise [Rack::Spec::RequestValidation::Error] Raises if given request is invalid to JSON Schema
+      # @raise [Rack::JsonSchema::RequestValidation::Error] Raises if given request is invalid to JSON Schema
       # @param env [Hash] Rack env
       def call(env)
         Validator.call(env: env, schema: @schema)
@@ -31,7 +31,7 @@ module Rack
         end
 
         # Raises an error if any error detected
-        # @raise [Rack::Spec::RequestValidation::Error]
+        # @raise [Rack::JsonSchema::RequestValidation::Error]
         def call
           case
           when !has_link_for_current_action?
@@ -86,7 +86,7 @@ module Rack
 
         # @return [String] Joined error message to the result of schema validation
         def schema_validation_error_message
-          JsonSchema::SchemaError.aggregate(schema_validation_errors).join("\n")
+          ::JsonSchema::SchemaError.aggregate(schema_validation_errors).join("\n")
         end
 
         # @return [String, nil] Request MIME Type specified in Content-Type header field
@@ -120,7 +120,7 @@ module Rack
         end
       end
 
-      # Base error class for Rack::Spec::RequestValidation
+      # Base error class for Rack::JsonSchema::RequestValidation
       class Error < Error
       end
 

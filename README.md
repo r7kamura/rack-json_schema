@@ -1,4 +1,4 @@
-# Rack::Spec
+# Rack::JsonSchema
 [JSON Schema](http://json-schema.org/) based Rack middlewares.
 
 ## Usage
@@ -6,20 +6,20 @@
 str = File.read("schema.json")
 schema = JSON.parse(str)
 
-use Rack::Spec::Docs, schema: schema
-use Rack::Spec::ErrorHandler
-use Rack::Spec::RequestValidation, schema: schema
-use Rack::Spec::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
-use Rack::Spec::Mock, schema: schema if ENV["RACK_ENV"] == "mock"
+use Rack::JsonSchema::Docs, schema: schema
+use Rack::JsonSchema::ErrorHandler
+use Rack::JsonSchema::RequestValidation, schema: schema
+use Rack::JsonSchema::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
+use Rack::JsonSchema::Mock, schema: schema if ENV["RACK_ENV"] == "mock"
 ```
 
-### Rack::Spec::RequestValidation
+### Rack::JsonSchema::RequestValidation
 Validates request and raises errors below.
 
-* Rack::Spec::RequestValidation::InvalidContentType
-* Rack::Spec::RequestValidation::InvalidJson
-* Rack::Spec::RequestValidation::InvalidParameter
-* Rack::Spec::RequestValidation::LinkNotFound
+* Rack::JsonSchema::RequestValidation::InvalidContentType
+* Rack::JsonSchema::RequestValidation::InvalidJson
+* Rack::JsonSchema::RequestValidation::InvalidParameter
+* Rack::JsonSchema::RequestValidation::LinkNotFound
 
 ```sh
 $ curl http://localhost:9292/users
@@ -47,11 +47,11 @@ $ curl http://localhost:9292/apps -H "Content-Type: application/json" -d '{"name
 }
 ```
 
-### Rack::Spec::ResponseValidation
+### Rack::JsonSchema::ResponseValidation
 Validates request and raises errors below.
 
-* Rack::Spec::RequestValidation::InvalidResponseContentType
-* Rack::Spec::RequestValidation::InvalidResponseType
+* Rack::JsonSchema::RequestValidation::InvalidResponseContentType
+* Rack::JsonSchema::RequestValidation::InvalidResponseType
 
 ```sh
 $ curl http://localhost:9292/apps
@@ -67,7 +67,7 @@ $ curl http://localhost:9292/apps
 }
 ```
 
-### Rack::Spec::Mock
+### Rack::JsonSchema::Mock
 Generates dummy response from JSON schema.
 
 ```sh
@@ -107,7 +107,7 @@ $ specup schema.json
 [2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
 ```
 
-### Rack::Spec::ErrorHandler
+### Rack::JsonSchema::ErrorHandler
 Returns appropriate error response including following properties when RequestValidation raises error.
 
 * message: Human readable message
@@ -120,35 +120,35 @@ Returns appropriate error response including following properties when RequestVa
  * invalid_response_type
  * link_not_found
 
-Here is a tree of all possible errors defined in Rack::Spec.
+Here is a tree of all possible errors defined in Rack::JsonSchema.
 
 ```
 StandardError
 |
-Rack::Spec::Error
+Rack::JsonSchema::Error
 |
-|--Rack::Spec::Mock::Error
+|--Rack::JsonSchema::Mock::Error
 |  |
-|  `--Rack::Spec::Mock::ExampleNotFound
+|  `--Rack::JsonSchema::Mock::ExampleNotFound
 |
-|--Rack::Spec::RequestValidation::Error
+|--Rack::JsonSchema::RequestValidation::Error
 |  |
-|  |--Rack::Spec::RequestValidation::InvalidContentType
+|  |--Rack::JsonSchema::RequestValidation::InvalidContentType
 |  |
-|  |--Rack::Spec::RequestValidation::InvalidJson
+|  |--Rack::JsonSchema::RequestValidation::InvalidJson
 |  |
-|  |--Rack::Spec::RequestValidation::InvalidParameter
+|  |--Rack::JsonSchema::RequestValidation::InvalidParameter
 |  |
-|  `--Rack::Spec::RequestValidation::LinkNotFound
+|  `--Rack::JsonSchema::RequestValidation::LinkNotFound
 |
-`--Rack::Spec::ResponseValidation::Error
+`--Rack::JsonSchema::ResponseValidation::Error
    |
-   |--Rack::Spec::ResponseValidation::InvalidResponseContentType
+   |--Rack::JsonSchema::ResponseValidation::InvalidResponseContentType
    |
-   `--Rack::Spec::ResponseValidation::InvalidResponseType
+   `--Rack::JsonSchema::ResponseValidation::InvalidResponseType
 ```
 
-### Rack::Spec::Docs
+### Rack::JsonSchema::Docs
 Returns API documentation as a text/plain content, rendered in GitHub flavored Markdown.
 
 * You can give `path` option to change default path: `GET /docs`

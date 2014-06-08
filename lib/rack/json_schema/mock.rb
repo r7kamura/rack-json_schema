@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     class Mock
       # Behaves as a rack-middleware
       # @param app [Object] Rack application
@@ -57,7 +57,7 @@ module Rack
         # Generates example response Hash from given schema
         # @return [Hash]
         # @example
-        #   Rack::Spec::Mock::ResponseGenerator(schema) #=> { "id" => 1, "name" => "example" }
+        #   Rack::JsonSchema::Mock::ResponseGenerator(schema) #=> { "id" => 1, "name" => "example" }
         def self.call(schema)
           schema.properties.inject({}) do |result, (key, value)|
             result.merge(

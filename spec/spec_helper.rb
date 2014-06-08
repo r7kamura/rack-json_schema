@@ -1,5 +1,5 @@
 require "rack/builder"
-require "rack/spec"
+require "rack/json_schema"
 require "rack/test"
 require "rspec/json_matcher"
 

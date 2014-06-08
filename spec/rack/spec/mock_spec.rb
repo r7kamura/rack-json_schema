@@ -1,13 +1,13 @@
 require "spec_helper"
 
-describe Rack::Spec::Mock do
+describe Rack::JsonSchema::Mock do
   include Rack::Test::Methods
 
   let(:app) do
     local_schema = schema
     Rack::Builder.app do
-      use Rack::Spec::ErrorHandler
-      use Rack::Spec::Mock, schema: local_schema
+      use Rack::JsonSchema::ErrorHandler
+      use Rack::JsonSchema::Mock, schema: local_schema
       run ->(env) do
         [
           200,

@@ -1,15 +1,15 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "rack/spec/version"
+require "rack/json_schema/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "rack-spec"
-  spec.version       = Rack::Spec::VERSION
+  spec.name          = "rack-json_schema"
+  spec.version       = Rack::JsonSchema::VERSION
   spec.authors       = ["Ryo Nakamura"]
   spec.email         = ["r7kamura@gmail.com"]
   spec.summary       = "JSON Schema based Rack middlewares"
 
-  spec.homepage      = "https://github.com/r7kamura/rack-spec"
+  spec.homepage      = "https://github.com/r7kamura/rack-json_schema"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

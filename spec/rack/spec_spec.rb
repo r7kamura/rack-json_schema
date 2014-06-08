@@ -1,6 +1,6 @@
 require "spec_helper"
 
-describe Rack::Spec do
+describe Rack::JsonSchema do
   include Rack::Test::Methods
 
   let(:app) do
@@ -8,9 +8,9 @@ describe Rack::Spec do
     local_response_body = response_body
     local_response_headers = response_headers
     Rack::Builder.app do
-      use Rack::Spec::ErrorHandler
-      use Rack::Spec::RequestValidation, schema: local_schema
-      use Rack::Spec::ResponseValidation, schema: local_schema
+      use Rack::JsonSchema::ErrorHandler
+      use Rack::JsonSchema::RequestValidation, schema: local_schema
+      use Rack::JsonSchema::ResponseValidation, schema: local_schema
       run ->(env) do
         [200, local_response_headers, [local_response_body]]
       end

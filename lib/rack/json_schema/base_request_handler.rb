@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     # Base class for providing some utility methods to handle Rack env and JSON Schema
     class BaseRequestHandler
       # Utility wrapper method

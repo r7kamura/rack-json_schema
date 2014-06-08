@@ -1,8 +1,8 @@
 ## 0.1.8
-* Add Rack::Spec::Docs
+* Add Rack::JsonSchema::Docs
 
 ## 0.1.7
-* Reveal `Rack::Spec::Schema#links`
+* Reveal `Rack::JsonSchema::Schema#links`
 
 ## 0.1.6
 * Support YAML schema at `specup`
@@ -11,15 +11,15 @@
 * Add `specup` executable
 
 ## 0.1.4
-* Add Rack::Spec::Mock
+* Add Rack::JsonSchema::Mock
 * Prettify response JSON
 
 ## v0.1.3
-* Array response support of Rack::Spec::ResponseValidation
+* Array response support of Rack::JsonSchema::ResponseValidation
 
 ## v0.1.2
 * Change Content-Type validation policy
-* Add Rack::Spec::ResponseValidation
+* Add Rack::JsonSchema::ResponseValidation
 
 ## v0.1.1
 * Add ErrorHandler rack middleware for building error response
@@ -31,7 +31,7 @@
 * Change RESTful resource API (#get, #post, #put, and #delete)
 
 ## v0.0.4
-* Add Rack::Spec::Restful, strongly conventional RESTful API Provider
+* Add Rack::JsonSchema::Restful, strongly conventional RESTful API Provider
 
 ## v0.0.3
 * Add a new constraint: required

@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "rack"
-require "rack/spec"
+require "rack/json_schema"
 require "yaml"
 
 begin
@@ -20,9 +20,9 @@ else
 end
 
 app = Rack::Builder.new do
-  use Rack::Spec::Docs, schema: schema
-  use Rack::Spec::ErrorHandler
-  use Rack::Spec::Mock, schema: schema
+  use Rack::JsonSchema::Docs, schema: schema
+  use Rack::JsonSchema::ErrorHandler
+  use Rack::JsonSchema::Mock, schema: schema
   run ->(env) { [404, {}, ["Not found"]] }
 end
 

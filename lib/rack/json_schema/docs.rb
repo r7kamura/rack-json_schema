@@ -1,5 +1,5 @@
 module Rack
-  module Spec
+  module JsonSchema
     class Docs
       DEFAULT_PATH = "/docs"
 
