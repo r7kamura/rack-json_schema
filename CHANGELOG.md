@@ -1,3 +1,6 @@
+## 1.0.0
+* Rename: rack-spec -> rack-json_schema
+
 ## 0.1.8
 * Add Rack::JsonSchema::Docs
 
