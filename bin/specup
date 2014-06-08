@@ -23,6 +23,8 @@ app = Rack::Builder.new do
   use Rack::JsonSchema::Docs, schema: schema
   use Rack::JsonSchema::SchemaProvider, schema: schema
   use Rack::JsonSchema::ErrorHandler
+  use Rack::JsonSchema::RequestValidation, schema: schema
+  use Rack::JsonSchema::ResponseValidation, schema: schema
   use Rack::JsonSchema::Mock, schema: schema
   run ->(env) { [404, {}, ["Not found"]] }
 end
