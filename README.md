@@ -1,6 +1,13 @@
 # Rack::JsonSchema
 [JSON Schema](http://json-schema.org/) based Rack middlewares.
 
+* [Rack::JsonSchema::RequestValidation](#rackjsonschemarequestvalidation)
+* [Rack::JsonSchema::ResponseValidation](#rackjsonschemaresponsevalidation)
+* [Rack::JsonSchema::Mock](#rackjsonschemamock)
+* [Rack::JsonSchema::ErrorHandler](#rackjsonschemaerrorhandler)
+* [Rack::JsonSchema::Docs](#rackjsonschemadocs)
+* [Rack::JsonSchema::SchemaProvider](#rackjsonschemaschemaprovider)
+
 ## Usage
 ```ruby
 str = File.read("schema.json")
