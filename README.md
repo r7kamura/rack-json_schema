@@ -7,6 +7,7 @@
 * [Rack::JsonSchema::ErrorHandler](#rackjsonschemaerrorhandler)
 * [Rack::JsonSchema::Docs](#rackjsonschemadocs)
 * [Rack::JsonSchema::SchemaProvider](#rackjsonschemaschemaprovider)
+* [specup](#specup)
 
 ## Usage
 ```ruby
@@ -30,25 +31,25 @@ Validates request and raises errors below.
 * Rack::JsonSchema::RequestValidation::LinkNotFound
 
 ```sh
-$ curl http://localhost:9292/users
+$ curl http://localhost:8080/users
 {
   "id": "link_not_found",
   "message": "Not found"
 }
 
-$ curl http://localhost:9292/apps -H "Content-Type: application/json" -d "invalid-json"
+$ curl http://localhost:8080/apps -H "Content-Type: application/json" -d "invalid-json"
 {
   "id": "invalid_json",
   "message": "Request body wasn't valid JSON"
 }
 
-$ curl http://localhost:9292/apps -H "Content-Type: text/plain" -d "{}"
+$ curl http://localhost:8080/apps -H "Content-Type: text/plain" -d "{}"
 {
   "id": "invalid_content_type",
   "message": "Invalid content type"
 }
 
-$ curl http://localhost:9292/apps -H "Content-Type: application/json" -d '{"name":"x"}'
+$ curl http://localhost:8080/apps -H "Content-Type: application/json" -d '{"name":"x"}'
 {
   "id": "invalid_parameter",
   "message": "Invalid request.\n#/name: failed schema #/definitions/app/links/0/schema/properties/name: Expected string to match pattern \"/^[a-z][a-z0-9-]{3,50}$/\", value was: x."
@@ -62,13 +63,13 @@ Validates request and raises errors below.
 * Rack::JsonSchema::RequestValidation::InvalidResponseType
 
 ```sh
-$ curl http://localhost:9292/apps
+$ curl http://localhost:8080/apps
 {
   "id": "invalid_response_content_type",
   "message": "Response Content-Type wasn't for JSON"
 }
 
-$ curl http://localhost:9292/apps
+$ curl http://localhost:8080/apps
 {
   "id": "invalid_response_type",
   "message": "#: failed schema #/definitions/app: Expected data to be of type \"object\"; value was: [\"message\", \"dummy\"]."
@@ -79,7 +80,7 @@ $ curl http://localhost:9292/apps
 Generates dummy response from JSON schema.
 
 ```sh
-$ curl http://localhost:9292/apps/1
+$ curl http://localhost:8080/apps/1
 [
   {
     "id": "01234567-89ab-cdef-0123-456789abcdef",
@@ -87,32 +88,23 @@ $ curl http://localhost:9292/apps/1
   }
 ]
 
-$ curl http://localhost:9292/apps/01234567-89ab-cdef-0123-456789abcdef
+$ curl http://localhost:8080/apps/01234567-89ab-cdef-0123-456789abcdef
 {
   "id": "01234567-89ab-cdef-0123-456789abcdef",
   "name": "example"
 }
 
-$ curl http://localhost:9292/apps/1 -d '{"name":"example"}'
+$ curl http://localhost:8080/apps/1 -d '{"name":"example"}'
 {
   "id": "01234567-89ab-cdef-0123-456789abcdef",
   "name": "example"
 }
 
-$ curl http://localhost:9292/recipes
+$ curl http://localhost:8080/recipes
 {
   "id": "example_not_found",
   "message": "No example found for #/definitions/recipe/id"
 }
-```
-
-Note: `specup` executable command is bundled to rackup dummy API server.
-
-```sh
-$ specup schema.json
-[2014-06-06 23:01:35] INFO  WEBrick 1.3.1
-[2014-06-06 23:01:35] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.5.0]
-[2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
 ```
 
 ### Rack::JsonSchema::ErrorHandler
@@ -163,20 +155,26 @@ Returns API documentation as a text/plain content, rendered in GitHub flavored M
 * API documentation is powered by [jdoc](https://github.com/r7kamura/jdoc) gem
 * This middleware is also bundled in the `specup` executable command
 
+### Rack::JsonSchema::SchemaProvider
+Serves JSON Schema at `GET /schema`.
+
+* You can give `path` option to change default path: `GET /schema`
+* This middleware is also bundled in the `specup` executable command
+
+## specup
+`specup` executable command is bundled to rackup handy mock API server.
+It validates requests,
+and returns dummy response,
+also returns auto-generated API documentation at `GET /docs`,
+and JSON Schema itself at `GET /schema`.
+
 ```sh
 $ specup schema.json
 [2014-06-06 23:01:35] INFO  WEBrick 1.3.1
 [2014-06-06 23:01:35] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.5.0]
 [2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
 
-$ curl :8080/docs -i
-HTTP/1.1 200 OK
-Content-Type: text/plain; charset=utf-8
-Server: WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
-Date: Sat, 07 Jun 2014 19:58:04 GMT
-Content-Length: 2175
-Connection: Keep-Alive
-
+$ curl :8080/docs
 # Example API
 * [App](#app)
  * [GET /apps](#get-apps)
@@ -186,47 +184,10 @@ Connection: Keep-Alive
  * [DELETE /apps/:id](#delete-appsid)
 * [Recipe](#recipe)
  * [GET /recipes](#get-recipes)
-
-## App
-An app is a program to be deployed.
-
-### Properties
-* id - unique identifier of app
- * Example: `01234567-89ab-cdef-0123-456789abcdef`
- * Type: string
- * Format: uuid
- * ReadOnly: true
-* name - unique name of app
- * Example: `example`
- * Type: string
- * Patern: `(?-mix:^[a-z][a-z0-9-]{3,50}$)`
-
-### GET /apps
-List existing apps.
-
 ...
-```
 
-### Rack::JsonSchema::SchemaProvider
-Serves JSON Schema at `GET /schema`.
-
-* You can give `path` option to change default path: `GET /schema`
-* This middleware is also bundled in the `specup` executable command
-
-```sh
-$ specup schema.json
-[2014-06-06 23:01:35] INFO  WEBrick 1.3.1
-[2014-06-06 23:01:35] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.5.0]
-[2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
-
-$ curl :8080/schema -i
+$ curl :8080/schema
 HTTP/1.1 200 OK
-Content-Type: text/plain; charset=utf-8
-Server: WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
-Date: Sat, 07 Jun 2014 19:58:04 GMT
-Content-Length: 2175
-Connection: Keep-Alive
-
 {
   "$schema": "http://json-schema.org/draft-04/hyper-schema",
   "definitions": {
@@ -239,3 +200,18 @@ Connection: Keep-Alive
     }
   }
 }
+
+$ curl :8080/apps/1
+[
+  {
+    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "example"
+  }
+]
+
+$ curl :8080/apps -H "Content-Type: application/json" -d '{"name":1}'
+{
+  "id": "invalid_parameter",
+  "message": "Invalid request.\n#/name: failed schema #/definitions/app/links/0/schema/properties/name: Expected data to be of type \"string\"; value was: 1."
+}
+```
