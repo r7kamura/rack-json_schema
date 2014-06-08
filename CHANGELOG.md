@@ -1,3 +1,6 @@
+## 1.0.2
+* Bundled all middlewares into `specup` executable command
+
 ## 1.0.1
 * Add Rack::JsonSchema::SchemaProvider
 
