@@ -7,6 +7,7 @@ str = File.read("schema.json")
 schema = JSON.parse(str)
 
 use Rack::JsonSchema::Docs, schema: schema
+use Rack::JsonSchema::SchemaProvider, schema: schema
 use Rack::JsonSchema::ErrorHandler
 use Rack::JsonSchema::RequestValidation, schema: schema
 use Rack::JsonSchema::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
@@ -198,3 +199,36 @@ List existing apps.
 
 ...
 ```
+
+### Rack::JsonSchema::SchemaProvider
+Serves JSON Schema at `GET /schema`.
+
+* You can give `path` option to change default path: `GET /schema`
+* This middleware is also bundled in the `specup` executable command
+
+```sh
+$ specup schema.json
+[2014-06-06 23:01:35] INFO  WEBrick 1.3.1
+[2014-06-06 23:01:35] INFO  ruby 2.0.0 (2013-06-27) [x86_64-darwin12.5.0]
+[2014-06-06 23:01:35] INFO  WEBrick::HTTPServer#start: pid=24303 port=8080
+
+$ curl :8080/schema -i
+HTTP/1.1 200 OK
+Content-Type: text/plain; charset=utf-8
+Server: WEBrick/1.3.1 (Ruby/2.1.1/2014-02-24)
+Date: Sat, 07 Jun 2014 19:58:04 GMT
+Content-Length: 2175
+Connection: Keep-Alive
+
+{
+  "$schema": "http://json-schema.org/draft-04/hyper-schema",
+  "definitions": {
+    "app": {
+      "$schema": "http://json-schema.org/draft-04/hyper-schema",
+      "description": "An app is a program to be deployed.",
+      "id": "schemata/app",
+      "title": "App",
+      ...
+    }
+  }
+}

@@ -1,3 +1,6 @@
+## 1.0.1
+* Add Rack::JsonSchema::SchemaProvider
+
 ## 1.0.0
 * Rename: rack-spec -> rack-json_schema
 
