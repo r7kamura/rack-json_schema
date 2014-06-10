@@ -23,7 +23,7 @@ module Rack
       end
 
       def body
-        MultiJson.encode({ id: id, message: message }, pretty: true) + "\n"
+        JSON.pretty_generate(id: id, message: message) + "\n"
       end
     end
   end

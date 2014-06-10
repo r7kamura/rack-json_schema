@@ -38,7 +38,7 @@ module Rack
 
       # @return [String] Rendered JSON Schema in JSON format
       def rendered_schema
-        MultiJson.encode(@schema, pretty: true)
+        JSON.pretty_generate(@schema)
       end
     end
   end

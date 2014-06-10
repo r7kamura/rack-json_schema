@@ -49,7 +49,7 @@ module Rack
         def dummy_body
           document = ResponseGenerator.call(schema_for_current_link)
           document = [document] if has_list_data?
-          MultiJson.encode(document, pretty: true) + "\n"
+          JSON.pretty_generate(document) + "\n"
         end
       end
 

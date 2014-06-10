@@ -1,3 +1,6 @@
+## 1.0.3
+* Remove dependency on multi_json
+
 ## 1.0.2
 * Bundled all middlewares into `specup` executable command
 

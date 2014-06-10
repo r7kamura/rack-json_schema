@@ -50,7 +50,7 @@ module Rack
         def has_valid_json?
           parameters
           true
-        rescue MultiJson::ParseError
+        rescue JSON::JSONError
           false
         end
 
@@ -108,11 +108,11 @@ module Rack
         end
 
         # @return [Hash] Request parameters decoded from JSON
-        # @raise [MultiJson::ParseError]
+        # @raise [JSON::JSONError]
         def parameters
           @parameters ||= begin
             if has_body?
-              MultiJson.decode(body)
+              JSON.parse(body)
             else
               {}
             end

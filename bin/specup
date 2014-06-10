@@ -16,7 +16,7 @@ case File.extname(path)
 when ".yml", ".yaml"
   schema = YAML.load(str)
 else
-  schema = MultiJson.decode(str)
+  schema = JSON.parse(str)
 end
 
 app = Rack::Builder.new do

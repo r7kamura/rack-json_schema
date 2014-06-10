@@ -62,7 +62,7 @@ module Rack
 
         # @return [Array, Hash] Response body data, decoded from JSON
         def data
-          MultiJson.decode(body)
+          JSON.parse(body)
         end
 
         # @return [JsonSchema::Validator]
