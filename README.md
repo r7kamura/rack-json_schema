@@ -80,7 +80,7 @@ $ curl http://localhost:8080/apps
 Generates dummy response from JSON schema.
 
 ```sh
-$ curl http://localhost:8080/apps/1
+$ curl http://localhost:8080/apps
 [
   {
     "id": "01234567-89ab-cdef-0123-456789abcdef",
