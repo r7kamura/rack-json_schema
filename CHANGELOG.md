@@ -1,3 +1,6 @@
+## 1.0.5
+* Declare charset=utf-8 in response content type
+
 ## 1.0.4
 * Return example of array property
 
