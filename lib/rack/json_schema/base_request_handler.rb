@@ -57,7 +57,7 @@ module Rack
 
       # @return [true, false] True if response is intended to be list data
       def has_list_data?
-        link.rel == "instances" && !link.target_schema
+        link.rel == "instances"
       end
     end
   end
