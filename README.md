@@ -149,7 +149,7 @@ Rack::JsonSchema::Error
 ```
 
 ### Rack::JsonSchema::Docs
-Returns API documentation as a text/plain content, rendered in GitHub flavored Markdown.
+Returns API documentation as text/html (GET /docs) or text/plain (GET /docs.md).
 
 * You can give `path` option to change default path: `GET /docs`
 * API documentation is powered by [jdoc](https://github.com/r7kamura/jdoc) gem

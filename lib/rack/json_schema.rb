@@ -1,3 +1,4 @@
+require "erubis"
 require "jdoc"
 require "json"
 require "json_schema"

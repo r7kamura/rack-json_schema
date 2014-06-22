@@ -1,3 +1,6 @@
+## 1.1.0
+* GET /docs returns HTML
+
 ## 1.0.7
 * Accepts GET /docs.md
 
