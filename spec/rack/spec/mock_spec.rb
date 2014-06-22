@@ -103,7 +103,7 @@ describe Rack::JsonSchema::Mock do
 
     context "without example" do
       before do
-        schema["definitions"]["recipe"]["definitions"]["id"].delete("example")
+        schema["definitions"]["app"]["definitions"]["id"].delete("example")
       end
 
       let(:verb) do
@@ -111,14 +111,14 @@ describe Rack::JsonSchema::Mock do
       end
 
       let(:path) do
-        "/recipes"
+        "/apps"
       end
 
       it "returns example_not_found error" do
         should == 500
         response.body.should be_json_as(
           id: "example_not_found",
-          message: "No example found for #/definitions/recipe/id",
+          message: "No example found for #/definitions/app/id",
         )
       end
     end

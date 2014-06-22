@@ -95,47 +95,11 @@
           "$ref": "#/definitions/app/definitions/name"
         }
       }
-    },
-    "recipe": {
-      "$schema": "http://json-schema.org/draft-04/hyper-schema",
-      "description": "cooking Recipe",
-      "title": "Recipe",
-      "type": [
-        "object"
-      ],
-      "definitions": {
-        "id": {
-          "description": "unique identifier of recipe",
-          "format": "uuid",
-          "readOnly": true,
-          "example": 1,
-          "type": [
-            "string"
-          ]
-        }
-      },
-      "links": [
-        {
-          "description": "List recipes",
-          "href": "/recipes",
-          "method": "GET",
-          "rel": "instances",
-          "title": "list"
-        }
-      ],
-      "properties": {
-        "id": {
-          "$ref": "#/definitions/recipe/definitions/id"
-        }
-      }
     }
   },
   "properties": {
     "app": {
       "$ref": "#/definitions/app"
-    },
-    "recipe": {
-      "$ref": "#/definitions/recipe"
     }
   },
   "type": [
