@@ -89,5 +89,16 @@ describe Rack::JsonSchema::Docs do
         response.body.should == "dummy"
       end
     end
+
+    context "with /docs.md" do
+      let(:path) do
+        "/docs.md"
+      end
+
+      it "also accepts GET /docs.md" do
+        should == 200
+        response.body.should_not == "dummy"
+      end
+    end
   end
 end

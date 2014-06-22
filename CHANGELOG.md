@@ -1,3 +1,6 @@
+## 1.0.7
+* Accepts GET /docs.md
+
 ## 1.0.6
 * Improve list detection logic
 

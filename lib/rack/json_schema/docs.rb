@@ -16,7 +16,7 @@ module Rack
       # Returns rendered document for document request
       # @param env [Hash] Rack env
       def call(env)
-        if env["REQUEST_METHOD"] == "GET" && env["PATH_INFO"] == path
+        if env["REQUEST_METHOD"] == "GET" && env["PATH_INFO"].gsub(/\.md\z/, "") == path
           [
             200,
             { "Content-Type" => "text/plain; charset=utf-8" },
