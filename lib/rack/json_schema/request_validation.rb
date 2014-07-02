@@ -40,7 +40,7 @@ module Rack
             raise InvalidContentType
           when has_body? && !has_valid_json?
             raise InvalidJson
-          when has_body? && has_schema? && !has_valid_parameter?
+          when has_schema? && !has_valid_parameter?
             raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
           end
         end
@@ -110,13 +110,22 @@ module Rack
         # @return [Hash] Request parameters decoded from JSON
         # @raise [JSON::JSONError]
         def parameters
-          @parameters ||= begin
-            if has_body?
-              JSON.parse(body)
-            else
-              {}
-            end
+          @parameters ||= parameters_from_query.merge(parameters_from_body)
+        end
+
+        # @return [Hash] Request parameters decoded from JSON
+        # @raise [JSON::JSONError]
+        def parameters_from_body
+          if has_body?
+            JSON.parse(body)
+          else
+            {}
           end
+        end
+
+        # @return [Hash] Request parameters extracted from URI query
+        def parameters_from_query
+          request.GET
         end
       end
 

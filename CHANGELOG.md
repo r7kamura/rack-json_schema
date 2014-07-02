@@ -1,3 +1,6 @@
+## 1.1.3
+* Validate request parameters in URI query too
+
 ## 1.1.2
 * Support an empty array response at response validation
 
