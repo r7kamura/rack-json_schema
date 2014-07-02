@@ -48,7 +48,7 @@ module Rack
 
         # @return [true, false] True if given data is valid to the JSON schema
         def valid?
-          validator.validate(example_item)
+          (has_list_data? && data.empty?) || validator.validate(example_item)
         end
 
         # @return [Hash] Choose an item from response data, to be validated

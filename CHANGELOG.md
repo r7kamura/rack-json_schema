@@ -1,3 +1,6 @@
+## 1.1.2
+* Support an empty array response at response validation
+
 ## 1.1.1
 * Skip response validation if response code is 4xx or 5xx
 
