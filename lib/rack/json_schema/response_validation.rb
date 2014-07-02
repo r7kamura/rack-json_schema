@@ -31,7 +31,7 @@ module Rack
         # Raises an error if any error detected, skipping validation for non-defined link
         # @raise [Rack::JsonSchema::ResponseValidation::InvalidResponse]
         def call
-          if has_link_for_current_action?
+          if !has_error_status? && has_link_for_current_action?
             case
             when !has_json_content_type?
               raise InvalidResponseContentType
@@ -81,6 +81,17 @@ module Rack
           result = ""
           @response[2].each {|str| result << str }
           result
+        end
+
+        # @return [Fixnum] Response status code
+        def response_status
+          @response[0]
+        end
+
+        # Skips validation if status code is equal to or larger than 400
+        # @return [Fixnum]
+        def has_error_status?
+          response_status >= 400
         end
       end
 

@@ -1,3 +1,6 @@
+## 1.1.1
+* Skip response validation if response code is 4xx or 5xx
+
 ## 1.1.0
 * GET /docs returns HTML
 
