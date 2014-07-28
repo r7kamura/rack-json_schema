@@ -28,6 +28,12 @@
           "type": [
             "string"
           ]
+        },
+        "file": {
+          "description": "an attachment of app",
+          "example": "",
+          "readOnly": false,
+          "type": "string"
         }
       },
       "links": [
@@ -85,6 +91,24 @@
             ]
           },
           "title": "Update"
+        },
+        {
+          "description": "Upload an attachment file for an app",
+          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}/files",
+          "method": "POST",
+          "rel": "create",
+          "encType": "multipart/form-data",
+          "schema": {
+            "properties": {
+              "file": {
+                "$ref": "#/definitions/app/definitions/file"
+              }
+            },
+            "type": [
+              "object"
+            ]
+          },
+          "title": "Create"
         }
       ],
       "properties": {

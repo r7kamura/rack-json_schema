@@ -38,9 +38,9 @@ module Rack
             raise LinkNotFound
           when has_body? && !has_valid_content_type?
             raise InvalidContentType
-          when has_body? && !has_valid_json?
+          when content_type_json? && has_body? && !has_valid_json?
             raise InvalidJson
-          when has_schema? && !has_valid_parameter?
+          when content_type_json? && has_schema? && !has_valid_parameter?
             raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
           end
         end
@@ -72,6 +72,10 @@ module Rack
         # @return [true, false] True if no or matched content type given
         def has_valid_content_type?
           mime_type.nil? || Rack::Mime.match?(link.enc_type, mime_type)
+        end
+
+        def content_type_json?
+          Rack::Mime.match?(link.enc_type, "application/json")
         end
 
         # @return [Array] A result of schema validation for the current action

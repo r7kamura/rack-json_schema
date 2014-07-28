@@ -146,6 +146,27 @@ describe Rack::JsonSchema do
       end
     end
 
+    context "with non-json content type with non-json request body", :with_valid_post_request do
+
+      let(:path) do
+        "/apps/#{app_id}/files"
+      end
+
+      let(:app_id) do
+        1
+      end
+
+      let(:params) do
+        { file: Rack::Test::UploadedFile.new(schema_path, 'text/x-yaml') }
+      end
+
+      before do
+        env["CONTENT_TYPE"] = "multipart/form-data"
+      end
+
+      it { should == 200 }
+    end
+
     context "with malformed JSON request body", :with_valid_post_request do
       let(:params) do
         "malformed"
