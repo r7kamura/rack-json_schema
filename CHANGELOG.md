@@ -1,3 +1,6 @@
+## 1.1.4
+* Skip validation of non-json request
+
 ## 1.1.3
 * Validate request parameters in URI query too
 
