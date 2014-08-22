@@ -202,12 +202,22 @@ describe Rack::JsonSchema do
         { "Content-Type" => "text/plain" }
       end
 
-      it "returns invalid_response_content_type error" do
-        should == 500
-        response.body.should be_json_as(
-          id: "invalid_response_content_type",
-          message: "Response Content-Type wasn't for JSON",
-        )
+      context "when mediaType is specified as text/plain" do
+        let(:path) do
+          "/apps/text"
+        end
+
+        it { should == 200 }
+      end
+
+      context "when mediaType is not specified" do
+        it "returns invalid_response_content_type error" do
+          should == 500
+          response.body.should be_json_as(
+            id: "invalid_response_content_type",
+            message: "Response Content-Type wasn't for JSON",
+          )
+        end
       end
     end
 

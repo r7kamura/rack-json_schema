@@ -31,7 +31,7 @@ module Rack
         # Raises an error if any error detected, skipping validation for non-defined link
         # @raise [Rack::JsonSchema::ResponseValidation::InvalidResponse]
         def call
-          if !has_error_status? && has_link_for_current_action?
+          if !has_error_status? && has_link_for_current_action? && has_json_media_type?
             case
             when !has_json_content_type?
               raise InvalidResponseContentType
@@ -39,6 +39,11 @@ module Rack
               raise InvalidResponseType, validator.errors
             end
           end
+        end
+
+        # @return [true, false] True if Link mediaType is for JSON
+        def has_json_media_type?
+          %r<\Aapplication/.*json> === link.media_type
         end
 
         # @return [true, false] True if response Content-Type is for JSON

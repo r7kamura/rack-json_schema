@@ -76,6 +76,14 @@
           "title": "List"
         },
         {
+          "description": "List existing apps in texts",
+          "href": "/apps/text",
+          "method": "GET",
+          "rel": "instances",
+          "title": "List",
+          "mediaType": "text/plain"
+        },
+        {
           "description": "Update an existing app.",
           "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}",
           "method": "PATCH",
