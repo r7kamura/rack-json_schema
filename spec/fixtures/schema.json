@@ -69,19 +69,19 @@
           "title": "Info"
         },
         {
+          "description": "Info for existing apps in text format",
+          "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}/text",
+          "method": "GET",
+          "rel": "self",
+          "title": "Info",
+          "mediaType": "text/plain"
+        },
+        {
           "description": "List existing apps.",
           "href": "/apps",
           "method": "GET",
           "rel": "instances",
           "title": "List"
-        },
-        {
-          "description": "List existing apps in texts",
-          "href": "/apps/text",
-          "method": "GET",
-          "rel": "instances",
-          "title": "List",
-          "mediaType": "text/plain"
         },
         {
           "description": "Update an existing app.",

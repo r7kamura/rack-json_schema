@@ -31,7 +31,7 @@ module Rack
         # Raises an error if any error detected, skipping validation for non-defined link
         # @raise [Rack::JsonSchema::ResponseValidation::InvalidResponse]
         def call
-          if !has_error_status? && has_link_for_current_action? && has_json_media_type?
+          if !has_error_status? && has_link_for_current_action? && has_link_of_media_type_json?
             case
             when !has_json_content_type?
               raise InvalidResponseContentType
@@ -42,13 +42,13 @@ module Rack
         end
 
         # @return [true, false] True if Link mediaType is for JSON
-        def has_json_media_type?
-          %r<\Aapplication/.*json> === link.media_type
+        def has_link_of_media_type_json?
+          mime_type_json?(link.media_type)
         end
 
         # @return [true, false] True if response Content-Type is for JSON
         def has_json_content_type?
-          %r<\Aapplication/.*json> === headers["Content-Type"]
+          mime_type_json?(mime_type)
         end
 
         # @return [true, false] True if given data is valid to the JSON schema
@@ -97,6 +97,22 @@ module Rack
         # @return [Fixnum]
         def has_error_status?
           response_status >= 400
+        end
+
+        # @return [String, nil] Response MIME Type specified in Content-Type header field
+        # @example
+        #   mime_type #=> "application/json"
+        def mime_type
+          headers["Content-Type"].split(";").first if headers["Content-Type"]
+        end
+
+        # @return [true, false] return true if mime type is for JSON
+        # @example
+        #   "application/json" #=> true
+        #   "application/calendar+json" #=> true
+        #   "application/vnd.myapp.custom-json" #=> false
+        def mime_type_json?(value)
+          %r<\Aapplication/(?:.*\+)?json> === value
         end
       end
 

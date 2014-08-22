@@ -204,7 +204,7 @@ describe Rack::JsonSchema do
 
       context "when mediaType is specified as text/plain" do
         let(:path) do
-          "/apps/text"
+          "/apps/#{response_data[:id]}/text"
         end
 
         it { should == 200 }
@@ -247,6 +247,14 @@ describe Rack::JsonSchema do
           message: /Expected data to match "uuid" format, value was: 123/,
         )
       end
+    end
+
+    context "with response content type for JSON" do
+      let(:response_headers) do
+        { "Content-Type" => "application/json; charset=utf-8" }
+      end
+
+      it { should == 200 }
     end
   end
 end
