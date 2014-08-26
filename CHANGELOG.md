@@ -1,3 +1,6 @@
+## 1.1.5
+* Check Content-Type on response validation
+
 ## 1.1.4
 * Skip validation of non-json request
 
