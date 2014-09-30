@@ -141,7 +141,7 @@ describe Rack::JsonSchema do
         should == 400
         response.body.should be_json_as(
           id: "invalid_parameter",
-          message: %r<\AInvalid request\.\n#/name: failed schema .+: Expected string to match pattern>,
+          message: String,
         )
       end
     end
@@ -230,7 +230,7 @@ describe Rack::JsonSchema do
         should == 500
         response.body.should be_json_as(
           id: "invalid_response_type",
-          message: /Missing required keys "id" in object/,
+          message: String,
         )
       end
     end
@@ -244,7 +244,7 @@ describe Rack::JsonSchema do
         should == 500
         response.body.should be_json_as(
           id: "invalid_response_type",
-          message: /Expected data to match "uuid" format, value was: 123/,
+          message: String,
         )
       end
     end
