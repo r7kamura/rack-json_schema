@@ -4,16 +4,18 @@ module Rack
       # Behaves as a rack-middleware
       # @param app [Object] Rack application
       # @param schema [Hash] Schema object written in JSON schema format
+      # @param strict [Boolean] Strict mode or not (default: true)
       # @raise [JsonSchema::SchemaError]
-      def initialize(app, schema: nil)
+      def initialize(app, schema: nil, strict: nil)
         @app = app
         @schema = Schema.new(schema)
+        @strict = strict
       end
 
       # @raise [Rack::JsonSchema::RequestValidation::Error] Raises if given request is invalid to JSON Schema
       # @param env [Hash] Rack env
       def call(env)
-        Validator.call(env: env, schema: @schema)
+        Validator.call(env: env, schema: @schema, strict: @strict)
         @app.call(env)
       end
 
@@ -25,23 +27,27 @@ module Rack
 
         # @param env [Hash] Rack env
         # @param schema [JsonSchema::Schema] Schema object
-        def initialize(env: nil, schema: nil)
+        # @param strict [Boolean] Strict mode or not (default: true)
+        def initialize(env: nil, schema: nil, strict: nil)
           @env = env
           @schema = schema
+          @strict = strict
         end
 
         # Raises an error if any error detected
         # @raise [Rack::JsonSchema::RequestValidation::Error]
         def call
-          case
-          when !has_link_for_current_action?
+          if has_link_for_current_action?
+            case
+            when has_body? && !has_valid_content_type?
+              raise InvalidContentType
+            when content_type_json? && has_body? && !has_valid_json?
+              raise InvalidJson
+            when content_type_json? && has_schema? && !has_valid_parameter?
+              raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
+            end
+          elsif strict?
             raise LinkNotFound
-          when has_body? && !has_valid_content_type?
-            raise InvalidContentType
-          when content_type_json? && has_body? && !has_valid_json?
-            raise InvalidJson
-          when content_type_json? && has_schema? && !has_valid_parameter?
-            raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
           end
         end
 
@@ -130,6 +136,11 @@ module Rack
         # @return [Hash] Request parameters extracted from URI query
         def parameters_from_query
           request.GET
+        end
+
+        # @return [Boolean] Strict mode or not.
+        def strict?
+          @strict != false
         end
       end
 
