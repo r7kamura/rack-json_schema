@@ -1,3 +1,6 @@
+## 1.1.6
+* Add :strict option to ignore undefined link
+
 ## 1.1.5
 * Check Content-Type on response validation
 
