@@ -1,4 +1,4 @@
-# Rack::JsonSchema
+# Rack::JsonSchema [![Build Status](https://travis-ci.org/r7kamura/rack-json_schema.svg?branch=master)](https://travis-ci.org/r7kamura/rack-json_schema)
 [JSON Schema](http://json-schema.org/) based Rack middlewares.
 
 * [Rack::JsonSchema::RequestValidation](#rackjsonschemarequestvalidation)
