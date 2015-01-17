@@ -23,7 +23,7 @@ use Rack::JsonSchema::Mock, schema: schema if ENV["RACK_ENV"] == "mock"
 ```
 
 ### Rack::JsonSchema::RequestValidation
-Validates request and raises errors below.
+Validates request and raises errors below. The rack will automatically look into the corresponding [hypermedia](http://json-schema.org/latest/json-schema-hypermedia.html#anchor6) definitions.
 
 * Rack::JsonSchema::RequestValidation::InvalidContentType
 * Rack::JsonSchema::RequestValidation::InvalidJson
