@@ -102,7 +102,7 @@ describe Rack::JsonSchema do
         should == 404
         response.body.should be_json_as(
           id: "link_not_found",
-          message: "Not found",
+          message: "Could not find the link definition for request path #{path}.",
         )
       end
     end

@@ -47,7 +47,7 @@ module Rack
               raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
             end
           elsif strict?
-            raise LinkNotFound
+            raise LinkNotFound.new("Could not find the link definition for request path #{path}.")
           end
         end
 
@@ -150,10 +150,6 @@ module Rack
 
       # Error class for case when no link defined for given request
       class LinkNotFound < Error
-        def initialize
-          super("Not found")
-        end
-
         def status
           404
         end
