@@ -47,7 +47,7 @@ module Rack
               raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
             end
           elsif strict?
-            raise LinkNotFound.new("Could not find the link definition for request path #{path}.")
+            raise LinkNotFound, "Could not find the link definition for request path #{path}."
           end
         end
 
