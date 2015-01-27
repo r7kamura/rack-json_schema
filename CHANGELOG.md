@@ -1,3 +1,6 @@
+## 1.1.8
+- Improve error message on LinkNotFound (thx @take)
+
 ## 1.1.7
 - Skip response validation on 3xx response
 
