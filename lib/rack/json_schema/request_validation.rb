@@ -38,13 +38,17 @@ module Rack
         # @raise [Rack::JsonSchema::RequestValidation::Error]
         def call
           if has_link_for_current_action?
-            case
-            when has_body? && !has_valid_content_type?
-              raise InvalidContentType
-            when content_type_json? && has_body? && !has_valid_json?
-              raise InvalidJson
-            when content_type_json? && has_schema? && !has_valid_parameter?
-              raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
+            if has_body? && !has_valid_content_type?
+              if strict?
+                raise InvalidContentType
+              end
+            else
+              case
+              when content_type_json? && has_body? && !has_valid_json?
+                raise InvalidJson
+              when content_type_json? && has_schema? && !has_valid_parameter?
+                raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
+              end
             end
           elsif strict?
             raise LinkNotFound, "Could not find the link definition for request path #{path}."
@@ -80,6 +84,7 @@ module Rack
           mime_type.nil? || Rack::Mime.match?(link.enc_type, mime_type)
         end
 
+        # @return [true, false] True if the current link supports json format
         def content_type_json?
           Rack::Mime.match?(link.enc_type, "application/json")
         end

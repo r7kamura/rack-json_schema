@@ -5,11 +5,12 @@ describe Rack::JsonSchema do
 
   let(:app) do
     local_schema = schema
+    local_strict = strict
     local_response_body = response_body
     local_response_headers = response_headers
     Rack::Builder.app do
       use Rack::JsonSchema::ErrorHandler
-      use Rack::JsonSchema::RequestValidation, schema: local_schema
+      use Rack::JsonSchema::RequestValidation, schema: local_schema, strict: local_strict
       use Rack::JsonSchema::ResponseValidation, schema: local_schema
       run ->(env) do
         [200, local_response_headers, [local_response_body]]
@@ -43,6 +44,10 @@ describe Rack::JsonSchema do
 
   let(:schema_path) do
     File.expand_path("../../fixtures/schema.json", __FILE__)
+  end
+
+  let(:strict) do
+    true
   end
 
   let(:response) do
@@ -118,6 +123,16 @@ describe Rack::JsonSchema do
           id: "invalid_content_type",
           message: "Invalid content type",
         )
+      end
+
+      context "when strict is false" do
+        let(:strict) do
+          false
+        end
+
+        it "skips content_type check" do
+          should == 200
+        end
       end
     end
 
