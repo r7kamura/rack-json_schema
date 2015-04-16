@@ -1,3 +1,6 @@
+## 1.2.0
+- Skip content_type check if strict mode is turned off (thx @tomoya55)
+
 ## 1.1.8
 - Improve error message on LinkNotFound (thx @take)
 
