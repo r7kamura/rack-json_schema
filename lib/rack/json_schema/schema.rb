@@ -27,7 +27,7 @@ module Rack
       #   schema.has_link_for?(method: "GET", path: "/recipes/{+id}") #=> nil
       def link_for(method: nil, path: nil)
         links_indexed_by_method[method].find do |link|
-          %r<^#{link.href.gsub(/\{(.*?)\}/, "[^/]+")}$> === path
+          %r<^#{link.href.gsub(/(?:\{.*?\})|(?::\w+)/, "[^/]+")}$> === path
         end
       end
 
