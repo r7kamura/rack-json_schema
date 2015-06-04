@@ -271,5 +271,17 @@ describe Rack::JsonSchema do
 
       it { should == 200 }
     end
+
+    context "with empty response body without JSON Content-Type" do
+      let(:response_body) do
+        ""
+      end
+
+      let(:response_headers) do
+        {}
+      end
+
+      it { should == 200 }
+    end
   end
 end

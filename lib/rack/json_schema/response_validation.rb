@@ -33,12 +33,17 @@ module Rack
         def call
           if !has_redirection_or_error_status? && has_link_for_current_action? && has_link_of_media_type_json?
             case
-            when !has_json_content_type?
+            when has_body? && !has_json_content_type?
               raise InvalidResponseContentType
             when !valid?
               raise InvalidResponseType, validator.errors
             end
           end
+        end
+
+        # @return [true, false] True if any bytes are included in response body
+        def has_body?
+          !body.size.zero?
         end
 
         # @return [true, false] True if Link mediaType is for JSON
@@ -53,7 +58,7 @@ module Rack
 
         # @return [true, false] True if given data is valid to the JSON schema
         def valid?
-          (has_list_data? && data.empty?) || validator.validate(example_item)
+          !has_body? || (has_list_data? && data.empty?) || validator.validate(example_item)
         end
 
         # @return [Hash] Choose an item from response data, to be validated
