@@ -1,3 +1,6 @@
+## 1.3.0
+- Support rails-style path format on link detection
+
 ## 1.2.0
 - Skip content_type check if strict mode is turned off (thx @tomoya55)
 
