@@ -1,3 +1,6 @@
+## 1.4.0
+- Allow non JSON Content-Type response on empty body
+
 ## 1.3.0
 - Support rails-style path format on link detection
 
