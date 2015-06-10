@@ -55,12 +55,10 @@ module Rack
               case
               when content_type_json? && has_body? && !has_valid_json?
                 raise InvalidJson
+              when content_type_json? && has_schema? && !has_hash_request_body?
+                raise InvalidParameter, "Invalid request. Request body must be an Object in JSON."
               when content_type_json? && has_schema? && !has_valid_parameter?
-                if has_hash_request_body?
-                  raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
-                else
-                  raise InvalidParameter, "Invalid request. Request body must be an Object in JSON."
-                end
+                raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
               end
             end
           elsif !ignore_missing_path?
@@ -71,7 +69,7 @@ module Rack
         private
 
         def has_hash_request_body?
-          parsed_body.is_a?(Hash)
+          parameters_from_body.is_a?(Hash)
         end
 
         def has_valid_json?
@@ -83,7 +81,7 @@ module Rack
 
         # @return [true, false] True if request parameters are all valid
         def has_valid_parameter?
-          parsed_body.is_a?(Hash) && schema_validation_result[0]
+          !!schema_validation_result[0]
         end
 
         # @return [true, false] True if any schema is defined for the current action
