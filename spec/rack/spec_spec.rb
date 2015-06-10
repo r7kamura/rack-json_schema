@@ -155,6 +155,14 @@ describe Rack::JsonSchema do
       end
     end
 
+    context "with Array request body", :with_valid_post_request do
+      let(:params) do
+        [].to_json
+      end
+
+      it { should == 400 }
+    end
+
     context "with valid request property", :with_valid_post_request do
       it { should == 200 }
     end
