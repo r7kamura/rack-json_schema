@@ -1,3 +1,6 @@
+## 1.5.1
+- Fix error when request body is an Array in JSON
+
 ## 1.5.0
 - Separate :strict option into 2 other options
 
