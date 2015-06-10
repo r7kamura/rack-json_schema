@@ -1,3 +1,6 @@
+## 1.5.0
+- Separate :strict option into 2 other options
+
 ## 1.4.0
 - Allow non JSON Content-Type response on empty body
 
