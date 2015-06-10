@@ -5,12 +5,13 @@ describe Rack::JsonSchema do
 
   let(:app) do
     local_schema = schema
-    local_strict = strict
+    local_ignore_invalid_content_type = ignore_invalid_content_type
+    local_ignore_missing_path = ignore_missing_path
     local_response_body = response_body
     local_response_headers = response_headers
     Rack::Builder.app do
       use Rack::JsonSchema::ErrorHandler
-      use Rack::JsonSchema::RequestValidation, schema: local_schema, strict: local_strict
+      use Rack::JsonSchema::RequestValidation, ignore_invalid_content_type: local_ignore_invalid_content_type, ignore_missing_path: local_ignore_missing_path, schema: local_schema
       use Rack::JsonSchema::ResponseValidation, schema: local_schema
       run ->(env) do
         [200, local_response_headers, [local_response_body]]
@@ -46,8 +47,12 @@ describe Rack::JsonSchema do
     File.expand_path("../../fixtures/schema.json", __FILE__)
   end
 
-  let(:strict) do
-    true
+  let(:ignore_invalid_content_type) do
+    false
+  end
+
+  let(:ignore_missing_path) do
+    false
   end
 
   let(:response) do
@@ -94,14 +99,18 @@ describe Rack::JsonSchema do
       "/apps"
     end
 
+    shared_context "with undefined route" do
+      let(:path) do
+        "/undefined"
+      end
+    end
+
     context "with defined route" do
       it { should == 200 }
     end
 
     context "with undefined route" do
-      let(:path) do
-        "/undefined"
-      end
+      include_context "with undefined route"
 
       it "returns link_not_found error" do
         should == 404
@@ -110,6 +119,16 @@ describe Rack::JsonSchema do
           message: "Could not find the link definition for request path #{path}.",
         )
       end
+    end
+
+    context "with undefined route and ignore_missing_path option" do
+      include_context "with undefined route"
+
+      let(:ignore_missing_path) do
+        true
+      end
+
+      it { should == 200 }
     end
 
     context "with request body & invalid content type", :with_valid_post_request do
@@ -124,15 +143,15 @@ describe Rack::JsonSchema do
           message: "Invalid content type",
         )
       end
+    end
 
-      context "when strict is false" do
-        let(:strict) do
-          false
-        end
+    context "with request body & invalid content type and ignore_invalid_content_type option" do
+      let(:ignore_invalid_content_type) do
+        true
+      end
 
-        it "skips content_type check" do
-          should == 200
-        end
+      it "skips content_type check" do
+        should == 200
       end
     end
 

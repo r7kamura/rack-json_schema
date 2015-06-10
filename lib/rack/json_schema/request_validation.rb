@@ -3,19 +3,26 @@ module Rack
     class RequestValidation
       # Behaves as a rack-middleware
       # @param app [Object] Rack application
+      # @param ignore_invalid_content_type [false, true] Ignore requests with non json content-type
+      # @param ignore_missing_path [false, true] Ignore requests not defined in schema
       # @param schema [Hash] Schema object written in JSON schema format
-      # @param strict [Boolean] Strict mode or not (default: true)
       # @raise [JsonSchema::SchemaError]
-      def initialize(app, schema: nil, strict: nil)
+      def initialize(app, ignore_invalid_content_type: false, ignore_missing_path: false, schema: nil)
         @app = app
+        @ignore_invalid_content_type = ignore_invalid_content_type
+        @ignore_missing_path = ignore_missing_path
         @schema = Schema.new(schema)
-        @strict = strict
       end
 
       # @raise [Rack::JsonSchema::RequestValidation::Error] Raises if given request is invalid to JSON Schema
       # @param env [Hash] Rack env
       def call(env)
-        Validator.call(env: env, schema: @schema, strict: @strict)
+        Validator.call(
+          env: env,
+          ignore_invalid_content_type: @ignore_invalid_content_type,
+          ignore_missing_path: @ignore_missing_path,
+          schema: @schema
+        )
         @app.call(env)
       end
 
@@ -26,12 +33,14 @@ module Rack
         end
 
         # @param env [Hash] Rack env
+        # @param ignore_invalid_content_type [false, true]
+        # @param ignore_missing_path [false, true]
         # @param schema [JsonSchema::Schema] Schema object
-        # @param strict [Boolean] Strict mode or not (default: true)
-        def initialize(env: nil, schema: nil, strict: nil)
+        def initialize(env: nil, ignore_invalid_content_type: false, ignore_missing_path: false, schema: nil)
           @env = env
+          @ignore_invalid_content_type = ignore_invalid_content_type
+          @ignore_missing_path = ignore_missing_path
           @schema = schema
-          @strict = strict
         end
 
         # Raises an error if any error detected
@@ -39,7 +48,7 @@ module Rack
         def call
           if has_link_for_current_action?
             if has_body? && !has_valid_content_type?
-              if strict?
+              unless ignore_invalid_content_type?
                 raise InvalidContentType
               end
             else
@@ -50,7 +59,7 @@ module Rack
                 raise InvalidParameter, "Invalid request.\n#{schema_validation_error_message}"
               end
             end
-          elsif strict?
+          elsif !ignore_missing_path?
             raise LinkNotFound, "Could not find the link definition for request path #{path}."
           end
         end
@@ -82,6 +91,16 @@ module Rack
         # @return [true, false] True if no or matched content type given
         def has_valid_content_type?
           mime_type.nil? || Rack::Mime.match?(link.enc_type, mime_type)
+        end
+
+        # @return [false, true]
+        def ignore_invalid_content_type?
+          !!@ignore_invalid_content_type
+        end
+
+        # @return [false, true]
+        def ignore_missing_path?
+          !!@ignore_missing_path
         end
 
         # @return [true, false] True if the current link supports json format
@@ -141,11 +160,6 @@ module Rack
         # @return [Hash] Request parameters extracted from URI query
         def parameters_from_query
           request.GET
-        end
-
-        # @return [Boolean] Strict mode or not.
-        def strict?
-          @strict != false
         end
       end
 
