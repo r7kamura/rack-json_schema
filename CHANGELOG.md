@@ -1,3 +1,6 @@
+## 1.5.2
+- Fix bug on handling empty request body handling (e.g. GET)
+
 ## 1.5.1
 - Fix error when request body is an Array in JSON
 
