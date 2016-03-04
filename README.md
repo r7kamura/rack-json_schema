@@ -57,10 +57,10 @@ $ curl http://localhost:8080/apps -H "Content-Type: application/json" -d '{"name
 ```
 
 ### Rack::JsonSchema::ResponseValidation
-Validates request and raises errors below.
+Validates response and raises errors below.
 
-* Rack::JsonSchema::RequestValidation::InvalidResponseContentType
-* Rack::JsonSchema::RequestValidation::InvalidResponseType
+* Rack::JsonSchema::ResponseValidation::InvalidResponseContentType
+* Rack::JsonSchema::ResponseValidation::InvalidResponseType
 
 ```sh
 $ curl http://localhost:8080/apps
