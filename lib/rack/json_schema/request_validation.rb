@@ -165,7 +165,20 @@ module Rack
 
         # @return [Hash] Request parameters extracted from URI query
         def parameters_from_query
-          request.GET
+          request.GET.inject({}) do |params, (k, v)|
+            if v.nil?
+              params[k] = v
+              next params
+            end
+            if v.is_integer?
+              params[k] = v.to_i
+            elsif v.is_float?
+              params[k] = v.to_f
+            else
+              params[k] = v
+            end
+            params
+          end
         end
 
         def parsed_body

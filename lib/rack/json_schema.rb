@@ -4,6 +4,7 @@ require "json"
 require "json_schema"
 require "rack"
 
+require "rack/json_schema/core_ext/string"
 require "rack/json_schema/base_request_handler"
 require "rack/json_schema/error"
 require "rack/json_schema/docs"
