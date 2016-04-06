@@ -23,8 +23,12 @@ describe Rack::JsonSchema do
     { "Content-Type" => "application/json" }
   end
 
+  let(:rel) do
+    :instances
+  end
+
   let(:response_body) do
-    if verb == :get
+    if rel == :instances
       [response_data].to_json
     else
       response_data.to_json
@@ -35,6 +39,7 @@ describe Rack::JsonSchema do
     {
       id: "01234567-89ab-cdef-0123-456789abcdef",
       name: "example",
+      "version": 1,
     }
   end
 
@@ -72,9 +77,27 @@ describe Rack::JsonSchema do
     response.status
   end
 
-  shared_context "with valid POST request", :with_valid_post_request do
+  shared_context "with GET params request", :with_get_params_request do
+    let(:app_id) do
+      1
+    end
+
+    let(:rel) do
+      :self
+    end
+
+    let(:path) do
+      "/apps/#{app_id}?" + Rack::Utils.build_query(query_params)
+    end
+  end
+
+    shared_context "with valid POST request", :with_valid_post_request do
     before do
       env["CONTENT_TYPE"] = "application/json"
+    end
+
+    let(:rel) do
+      :self
     end
 
     let(:verb) do
@@ -86,7 +109,7 @@ describe Rack::JsonSchema do
     end
 
     let(:params) do
-      { name: "abcd" }.to_json
+      { name: "abcd", version: 1 }.to_json
     end
   end
 
@@ -129,6 +152,46 @@ describe Rack::JsonSchema do
       end
 
       it { should == 200 }
+    end
+
+    let(:app_id) do
+      1
+    end
+
+    context "with integer query params", :with_get_params_request do
+      let(:query_params) do
+        { name: "abcd", version: 1 }
+      end
+
+      it { should == 200 }
+    end
+
+    context "with float query params", :with_get_params_request do
+      let(:query_params) do
+        { name: "abcd", version: 1.2 }
+      end
+
+      it "returns invalid_parameter error" do
+        should == 400
+        response.body.should be_json_as(
+          id: "invalid_parameter",
+          message: String,
+        )
+      end
+    end
+
+    context "with broken query params", :with_get_params_request do
+      let(:query_params) do
+        { name: "abcd", version: nil }
+      end
+
+      it "returns invalid_parameter error" do
+        should == 400
+        response.body.should be_json_as(
+          id: "invalid_parameter",
+          message: String,
+        )
+      end
     end
 
     context "with request body & invalid content type", :with_valid_post_request do

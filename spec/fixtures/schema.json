@@ -29,6 +29,15 @@
             "string"
           ]
         },
+        "version": {
+          "description": "version of app",
+          "example": 1,
+          "readOnly": false,
+          "type": [
+            "integer"
+          ],
+          "minimum": 0
+        },
         "file": {
           "description": "an attachment of app",
           "example": "",
@@ -46,10 +55,17 @@
             "properties": {
               "name": {
                 "$ref": "#/definitions/app/definitions/name"
+              },
+              "version": {
+                "$ref": "#/definitions/app/definitions/version"
               }
             },
             "type": [
               "object"
+            ],
+            "required": [
+              "name",
+              "version"
             ]
           },
           "title": "Create"
@@ -66,6 +82,19 @@
           "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}",
           "method": "GET",
           "rel": "self",
+          "schema": {
+            "properties": {
+              "version": {
+                "$ref": "#/definitions/app/definitions/version"
+              }
+            },
+            "required": [
+              "version"
+            ],
+            "type": [
+              "object"
+            ]
+          },
           "title": "Info"
         },
         {
@@ -73,6 +102,16 @@
           "href": "/apps/{(%23%2Fdefinitions%2Fapp%2Fdefinitions%2Fid)}/text",
           "method": "GET",
           "rel": "self",
+          "schema": {
+            "properties": {
+              "version": {
+                "$ref": "#/definitions/app/definitions/version"
+              }
+            },
+            "type": [
+              "object"
+            ]
+          },
           "title": "Info",
           "mediaType": "text/plain"
         },
@@ -92,6 +131,9 @@
             "properties": {
               "name": {
                 "$ref": "#/definitions/app/definitions/name"
+              },
+              "version": {
+                "$ref": "#/definitions/app/definitions/version"
               }
             },
             "type": [
@@ -125,6 +167,9 @@
         },
         "name": {
           "$ref": "#/definitions/app/definitions/name"
+        },
+        "version": {
+          "$ref": "#/definitions/app/definitions/version"
         }
       }
     }

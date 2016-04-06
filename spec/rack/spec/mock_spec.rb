@@ -61,6 +61,7 @@ describe Rack::JsonSchema::Mock do
             {
               id: schema["definitions"]["app"]["definitions"]["id"]["example"],
               name: schema["definitions"]["app"]["definitions"]["name"]["example"],
+              version: schema["definitions"]["app"]["definitions"]["version"]["example"],
             }
           ]
         )
@@ -82,6 +83,7 @@ describe Rack::JsonSchema::Mock do
           {
             id: schema["definitions"]["app"]["definitions"]["id"]["example"],
             name: schema["definitions"]["app"]["definitions"]["name"]["example"],
+            version: schema["definitions"]["app"]["definitions"]["version"]["example"],
           }
         )
       end
