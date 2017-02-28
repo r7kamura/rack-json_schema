@@ -10,6 +10,7 @@
 * [specup](#specup)
 
 ## Usage
+
 ```ruby
 str = File.read("schema.json")
 schema = JSON.parse(str)
@@ -20,6 +21,18 @@ use Rack::JsonSchema::ErrorHandler
 use Rack::JsonSchema::RequestValidation, schema: schema
 use Rack::JsonSchema::ResponseValidation, schema: schema if ENV["RACK_ENV"] == "test"
 use Rack::JsonSchema::Mock, schema: schema if ENV["RACK_ENV"] == "mock"
+```
+
+If you're using Rails, you can do this by editing application.rb
+
+#### Example
+
+```ruby
+module MyApp
+  class Application < Rails::Application
+    config.middleware.use Rack::JsonSchema::RequestValidation, schema: JSON.parse(File.read('docs/schema/schema.json'))
+  end
+end
 ```
 
 ### Rack::JsonSchema::RequestValidation
