@@ -3,8 +3,8 @@ module Rack
     # Base class for providing some utility methods to handle Rack env and JSON Schema
     class BaseRequestHandler
       # Utility wrapper method
-      def self.call(**args)
-        new(**args).call
+      def self.call(*args, **kwargs)
+        new(*args, **kwargs).call
       end
 
       # @param env [Hash] Rack env

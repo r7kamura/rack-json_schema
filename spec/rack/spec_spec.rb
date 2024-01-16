@@ -114,7 +114,7 @@ describe Rack::JsonSchema do
 
       it "returns link_not_found error" do
         should == 404
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "link_not_found",
           message: "Could not find the link definition for request path #{path}.",
         )
@@ -138,7 +138,7 @@ describe Rack::JsonSchema do
 
       it "returns invalid_content_type error" do
         should == 400
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "invalid_content_type",
           message: "Invalid content type",
         )
@@ -181,7 +181,7 @@ describe Rack::JsonSchema do
 
       it "returns invalid_parameter error" do
         should == 400
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "invalid_parameter",
           message: String,
         )
@@ -216,7 +216,7 @@ describe Rack::JsonSchema do
 
       it "returns invalid_parameter error" do
         should == 400
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "invalid_json",
           message: "Request body wasn't valid JSON",
         )
@@ -255,7 +255,7 @@ describe Rack::JsonSchema do
       context "when mediaType is not specified" do
         it "returns invalid_response_content_type error" do
           should == 500
-          response.body.should be_json_as(
+          expect(response.body).to be_json_as(
             id: "invalid_response_content_type",
             message: "Response Content-Type wasn't for JSON",
           )
@@ -270,7 +270,7 @@ describe Rack::JsonSchema do
 
       it "returns invalid_response_type error" do
         should == 500
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "invalid_response_type",
           message: String,
         )
@@ -284,7 +284,7 @@ describe Rack::JsonSchema do
 
       it "returns invalid_response_type error" do
         should == 500
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "invalid_response_type",
           message: String,
         )
