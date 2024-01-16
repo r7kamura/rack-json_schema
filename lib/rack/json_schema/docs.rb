@@ -34,8 +34,8 @@ module Rack
       end
 
       class DocumentGenerator
-        def self.call(*args)
-          new(*args).call
+        def self.call(*args, **kwargs)
+          new(*args, **kwargs).call
         end
 
         # @param app [Object] Rack application
