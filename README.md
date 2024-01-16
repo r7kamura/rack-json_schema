@@ -1,4 +1,7 @@
-# Rack::JsonSchema [![Build Status](https://travis-ci.org/r7kamura/rack-json_schema.svg?branch=master)](https://travis-ci.org/r7kamura/rack-json_schema)
+# Rack::JsonSchema
+
+[![CI](https://github.com/r7kamura/rack-json_schema/actions/workflows/ci.yml/badge.svg)](https://github.com/r7kamura/rack-json_schema/actions/workflows/ci.yml)
+
 [JSON Schema](http://json-schema.org/) based Rack middlewares.
 
 * [Rack::JsonSchema::RequestValidation](#rackjsonschemarequestvalidation)
