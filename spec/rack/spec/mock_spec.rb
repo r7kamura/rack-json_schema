@@ -56,7 +56,7 @@ describe Rack::JsonSchema::Mock do
 
       it "returns Array dummy response" do
         should == 200
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           [
             {
               id: schema["definitions"]["app"]["definitions"]["id"]["example"],
@@ -78,7 +78,7 @@ describe Rack::JsonSchema::Mock do
 
       it "returns dummy response" do
         should == 200
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           {
             id: schema["definitions"]["app"]["definitions"]["id"]["example"],
             name: schema["definitions"]["app"]["definitions"]["name"]["example"],
@@ -116,7 +116,7 @@ describe Rack::JsonSchema::Mock do
 
       it "returns example_not_found error" do
         should == 500
-        response.body.should be_json_as(
+        expect(response.body).to be_json_as(
           id: "example_not_found",
           message: "No example found for #/definitions/app/id",
         )

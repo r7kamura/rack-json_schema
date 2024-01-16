@@ -60,7 +60,7 @@ describe Rack::JsonSchema::Docs do
 
       it "generates API documentation and returns it to request to GET /docs" do
         should == 200
-        response.body.should include("Example API")
+        expect(response.body).to include("Example API")
       end
     end
 
@@ -75,7 +75,7 @@ describe Rack::JsonSchema::Docs do
 
       it "responds to specified path" do
         should == 200
-        response.body.should_not == "dummy"
+        expect(response.body).not_to eq("dummy")
       end
     end
 
@@ -86,7 +86,7 @@ describe Rack::JsonSchema::Docs do
 
       it "delegates request to inner app" do
         should == 200
-        response.body.should == "dummy"
+        expect(response.body).to eq("dummy")
       end
     end
 
@@ -97,7 +97,7 @@ describe Rack::JsonSchema::Docs do
 
       it "also accepts GET /docs.md" do
         should == 200
-        response.body.should_not == "dummy"
+        expect(response.body).not_to eq("dummy")
       end
     end
   end
