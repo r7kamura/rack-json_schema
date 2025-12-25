@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rack-json_schema (1.5.3)
+    rack-json_schema (1.5.4)
       erubis
       jdoc (>= 0.4.4)
       json_schema (~> 0.2)
