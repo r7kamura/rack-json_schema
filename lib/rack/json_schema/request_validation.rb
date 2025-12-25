@@ -138,13 +138,15 @@ module Rack
 
         # @return [String] request body
         def body
-          if instance_variable_defined?(:@body)
-            @body
-          else
+          return @body if instance_variable_defined?(:@body)
+
+          if request.body
             @body = request.body.read
             request.body.rewind
-            @body
+          else
+            @body = ''
           end
+          @body
         end
 
         # @return [Hash] Request parameters decoded from JSON
