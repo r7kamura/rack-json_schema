@@ -88,7 +88,7 @@ module Rack
 
         # @return [String] Response body
         def body
-          result = ""
+          result = String.new
           @response[2].each {|str| result << str }
           result
         end
