@@ -2,8 +2,7 @@ PATH
   remote: .
   specs:
     rack-json_schema (1.5.5)
-      erubis
-      jdoc (>= 0.4.4)
+      jdoc (>= 0.5.0)
       json_schema (~> 0.2)
       rack
 
@@ -30,12 +29,12 @@ GEM
     diff-lcs (1.5.0)
     drb (2.2.0)
       ruby2_keywords
-    erubis (2.7.0)
+    erubi (1.13.1)
     i18n (1.14.1)
       concurrent-ruby (~> 1.0)
-    jdoc (0.4.4)
+    jdoc (0.5.0)
       activesupport
-      erubis
+      erubi
       json_schema
       rack
       redcarpet
