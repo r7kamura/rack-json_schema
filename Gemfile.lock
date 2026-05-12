@@ -42,8 +42,11 @@ GEM
     json (2.19.5)
     json_schema (0.21.0)
     method_source (1.0.0)
-    minitest (5.21.1)
+    minitest (6.0.6)
+      drb (~> 2.0)
+      prism (~> 1.5)
     mutex_m (0.2.0)
+    prism (1.9.0)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -82,6 +85,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (>= 1.5)
+  minitest (>= 6.0)
   pry
   rack-json_schema!
   rack-test
