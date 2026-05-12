@@ -3,6 +3,7 @@ PATH
   specs:
     rack-json_schema (1.5.5)
       jdoc (>= 0.5.0)
+      json (>= 2.7.2)
       json_schema (~> 0.2)
       rack
 
@@ -38,7 +39,7 @@ GEM
       json_schema
       rack
       redcarpet
-    json (2.7.1)
+    json (2.19.5)
     json_schema (0.21.0)
     method_source (1.0.0)
     minitest (5.21.1)
