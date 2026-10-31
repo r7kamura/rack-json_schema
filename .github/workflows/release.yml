@@ -2,13 +2,10 @@ name: release
 
 on:
   push:
-    tags:
-      - "v*.*.*"
+    branches:
+      - main
 
 jobs:
   release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
+    uses: r7kamura/workflows/.github/workflows/gem-release.yml@main
+    if: github.repository_owner == 'r7kamura'
